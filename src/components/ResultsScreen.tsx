@@ -43,7 +43,7 @@ export default function ResultsScreen({ questions, answers }: ResultsScreenProps
               {!gotItRight && (
                 <div className={styles.note}>
                   <div className={styles.noteLabel}>WHY</div>
-                  {q.reviewNote}
+                  {q.reviewNote || 'This solution is actually correct — there are no bugs.'}
                 </div>
               )}
             </div>

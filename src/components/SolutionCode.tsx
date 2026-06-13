@@ -14,6 +14,8 @@ export default function SolutionCode({ code }: SolutionCodeProps) {
 
   useEffect(() => {
     if (codeRef.current) {
+      codeRef.current.removeAttribute('data-highlighted');
+      codeRef.current.className = 'language-python';
       hljs.highlightElement(codeRef.current);
     }
   }, [code]);
