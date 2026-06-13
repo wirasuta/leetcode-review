@@ -1,0 +1,98 @@
+.card {
+  border: 1px solid var(--border);
+  background: var(--surface);
+  padding: var(--space-xl);
+  margin-bottom: var(--space-2xl);
+}
+
+.progress {
+  font-size: var(--fs-xs);
+  color: var(--text-secondary);
+  margin-bottom: var(--space-xl);
+}
+
+.category {
+  font-size: var(--fs-xs);
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  color: var(--accent);
+  margin-bottom: var(--space-sm);
+}
+
+.title {
+  font-size: var(--fs-lg);
+  font-weight: 600;
+  margin-bottom: var(--space-lg);
+}
+
+.description {
+  color: var(--text-secondary);
+  font-size: var(--fs-sm);
+  line-height: 1.7;
+  margin-bottom: var(--space-xl);
+  white-space: pre-wrap;
+}
+
+.examplesHeading {
+  font-size: var(--fs-xs);
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  color: var(--text-secondary);
+  margin-bottom: var(--space-sm);
+}
+
+.examples {
+  margin-bottom: var(--space-xl);
+}
+
+.example {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  padding: var(--space-md);
+  margin-bottom: var(--space-sm);
+  font-size: var(--fs-sm);
+  line-height: 1.6;
+}
+
+.exampleLabel {
+  font-weight: 600;
+  color: var(--text);
+}
+
+.exampleInput, .exampleOutput {
+  color: var(--text-secondary);
+}
+
+.exampleExplanation {
+  color: var(--text-secondary);
+  font-style: italic;
+  margin-top: var(--space-xs);
+}
+
+.constraintsHeading {
+  font-size: var(--fs-xs);
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  color: var(--text-secondary);
+  margin-bottom: var(--space-sm);
+}
+
+.constraintsList {
+  list-style: none;
+  margin-bottom: var(--space-2xl);
+}
+
+.constraintItem {
+  font-size: var(--fs-sm);
+  color: var(--text-secondary);
+  padding: 2px 0;
+  padding-left: var(--space-md);
+  position: relative;
+}
+
+.constraintItem::before {
+  content: '\2022';
+  position: absolute;
+  left: 0;
+  color: var(--border);
+}
