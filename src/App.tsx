@@ -1,7 +1,9 @@
 import { useReducer, useMemo } from 'react';
 import type { Verdict, AppAction } from './lib/types';
 import { dateToSeed, seededShuffle } from './lib/shuffle';
-import problems from './data/problems.json';
+import type { Problem } from './lib/types';
+import problemsData from './data/problems.json';
+const problems = problemsData as Problem[];
 import Header from './components/Header';
 import QuestionCard from './components/QuestionCard';
 import ResultsScreen from './components/ResultsScreen';

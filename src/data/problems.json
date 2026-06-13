@@ -1,1 +1,1869 @@
-[]
+[
+  {
+    "title": "Merge Strings Alternately",
+    "titleSlug": "merge-strings-alternately",
+    "category": "Array / String",
+    "description": "You are given two strings word1 and word2. Merge the strings by adding letters in alternating order, starting with word1. If a string is longer than the other, append the remaining letters onto the end of the merged string. Return the merged string.",
+    "examples": [
+      {
+        "input": "word1 = \"abc\", word2 = \"pqr\"",
+        "output": "\"apbqcr\"",
+        "explanation": "The merged string is formed by alternating letters: a p b q c r."
+      },
+      {
+        "input": "word1 = \"ab\", word2 = \"pqrs\"",
+        "output": "\"apbqrs\"",
+        "explanation": "After alternating a/p and b/q, word2 still has 'r' and 's' remaining, so they are appended."
+      }
+    ],
+    "constraints": [
+      "1 <= word1.length, word2.length <= 100",
+      "word1 and word2 consist of lowercase English letters."
+    ],
+    "solution": "def mergeAlternately(word1: str, word2: str) -> str:\n    i = j = 0\n    result = []\n    while i < len(word1) and j < len(word2):\n        result.append(word1[i])\n        result.append(word2[j])\n        i += 1\n        j += 1\n    result.append(word1[i:])\n    result.append(word2[j:])\n    return ''.join(result)",
+    "groundTruth": "correct",
+    "reviewNote": ""
+  },
+  {
+    "title": "Greatest Common Divisor of Strings",
+    "titleSlug": "greatest-common-divisor-of-strings",
+    "category": "Array / String",
+    "description": "For two strings s and t, we say 't divides s' if and only if s = t + ... + t (i.e., t is concatenated with itself one or more times). Given two strings str1 and str2, return the largest string x such that x divides both str1 and str2.",
+    "examples": [
+      {
+        "input": "str1 = \"ABCABC\", str2 = \"ABC\"",
+        "output": "\"ABC\"",
+        "explanation": "\"ABC\" divides both strings by concatenation."
+      },
+      {
+        "input": "str1 = \"LEET\", str2 = \"CODE\"",
+        "output": "\"\"",
+        "explanation": "There is no string that divides both."
+      }
+    ],
+    "constraints": [
+      "1 <= str1.length, str2.length <= 1000",
+      "str1 and str2 consist of uppercase English letters."
+    ],
+    "solution": "def gcdOfStrings(str1: str, str2: str) -> str:\n    if len(str1) < len(str2):\n        str1, str2 = str2, str1\n    gcd_len = 0\n    for i in range(1, len(str2) + 1):\n        if len(str2) % i == 0 and len(str1) % i == 0:\n            gcd_len = i\n    candidate = str2[:gcd_len]\n    if candidate * (len(str1) // len(candidate)) == str1 and candidate * (len(str2) // len(candidate)) == str2:\n        return candidate\n    return \"\"",
+    "groundTruth": "incorrect",
+    "reviewNote": "The GCD length computed is not the actual GCD of the string lengths \u2014 it finds the largest divisor of len(str2) that also divides len(str1), but i iterates forward so gcd_len ends up being the last (largest i) matching the condition, not necessarily len(gcd(len1, len2)). However, the real bug is that it uses integer division as the GCD check instead of the mathematical GCD; for example, str1='ABAB', str2='ABABAB' would fail."
+  },
+  {
+    "title": "Kids With the Greatest Number of Candies",
+    "titleSlug": "kids-with-the-greatest-number-of-candies",
+    "category": "Array / String",
+    "description": "There are n kids with candies. You are given an integer array candies, where each candies[i] represents the number of candies the ith kid has, and an integer extraCandies. For each kid, check if giving them all the extraCandies would make them have the greatest number of candies among all kids. Return a boolean array result of length n.",
+    "examples": [
+      {
+        "input": "candies = [2,3,5,1,3], extraCandies = 3",
+        "output": "[true,true,true,false,true]",
+        "explanation": "Kid 3 (5 candies) already has the most. Kids 0,1,4 would have 5,6,8 \u2014 all >= 5. Kid 3 would have 4, which is < 5."
+      }
+    ],
+    "constraints": [
+      "2 <= candies.length <= 100",
+      "1 <= candies[i] <= 100",
+      "1 <= extraCandies <= 50"
+    ],
+    "solution": "def kidsWithCandies(candies: list[int], extraCandies: int) -> list[bool]:\n    max_candies = max(candies)\n    return [c + extraCandies >= max_candies for c in candies]",
+    "groundTruth": "correct",
+    "reviewNote": ""
+  },
+  {
+    "title": "Can Place Flowers",
+    "titleSlug": "can-place-flowers",
+    "category": "Array / String",
+    "description": "You have a long flowerbed in which some plots are planted and some are empty. However, flowers cannot be planted in adjacent plots. Given an integer array flowerbed containing 0's (empty) and 1's (planted), and an integer n, return true if n new flowers can be planted without violating the no-adjacent-flowers rule, and false otherwise.",
+    "examples": [
+      {
+        "input": "flowerbed = [1,0,0,0,1], n = 1",
+        "output": "true",
+        "explanation": "We can plant at position 2 (0-indexed) without violating adjacency."
+      },
+      {
+        "input": "flowerbed = [1,0,0,0,1], n = 2",
+        "output": "false",
+        "explanation": "Only 1 spot is available; planting 2 would create adjacent flowers."
+      }
+    ],
+    "constraints": [
+      "1 <= flowerbed.length <= 2 * 10^4",
+      "flowerbed[i] is 0 or 1.",
+      "There are no two adjacent flowers in flowerbed.",
+      "0 <= n <= flowerbed.length"
+    ],
+    "solution": "def canPlaceFlowers(flowerbed: list[int], n: int) -> bool:\n    count = 0\n    for i in range(len(flowerbed)):\n        if flowerbed[i] == 0:\n            left_empty = i == 0 or flowerbed[i-1] == 0\n            right_empty = i == len(flowerbed)-1 or flowerbed[i+1] == 0\n            if left_empty and right_empty:\n                flowerbed[i] = 1\n                count += 1\n                i += 1\n    return count >= n",
+    "groundTruth": "incorrect",
+    "reviewNote": "The increment 'i += 1' inside the loop has no effect because the for loop reassigns i on each iteration. The intent was to skip the next plot after planting, but since Python's for loop overwrites i, the adjacent plot check is not skipped and may incorrectly allow or disallow placements."
+  },
+  {
+    "title": "Reverse Vowels of a String",
+    "titleSlug": "reverse-vowels-of-a-string",
+    "category": "Array / String",
+    "description": "Given a string s, reverse only all the vowels in the string and return it. The vowels are 'a', 'e', 'i', 'o', 'u' (both lowercase and uppercase). Non-vowel characters remain in their original positions.",
+    "examples": [
+      {
+        "input": "s = \"hello\"",
+        "output": "\"holle\"",
+        "explanation": "Vowels 'e' and 'o' are swapped."
+      },
+      {
+        "input": "s = \"leetcode\"",
+        "output": "\"leotcede\"",
+        "explanation": "Vowels 'e','e','o','e' are reversed to 'e','o','e','e'."
+      }
+    ],
+    "constraints": [
+      "1 <= s.length <= 3 * 10^5",
+      "s consists of printable ASCII characters."
+    ],
+    "solution": "def reverseVowels(s: str) -> str:\n    vowels = set('aeiouAEIOU')\n    s = list(s)\n    l, r = 0, len(s) - 1\n    while l < r:\n        if s[l] in vowels and s[r] in vowels:\n            s[l], s[r] = s[r], s[l]\n            l += 1\n            r -= 1\n        elif s[l] in vowels:\n            r -= 1\n        elif s[r] in vowels:\n            l += 1\n        else:\n            l += 1\n            r -= 1\n    return ''.join(s)",
+    "groundTruth": "correct",
+    "reviewNote": ""
+  },
+  {
+    "title": "Reverse Words in a String",
+    "titleSlug": "reverse-words-in-a-string",
+    "category": "Array / String",
+    "description": "Given an input string s, reverse the order of the words. A word is defined as a sequence of non-space characters. The words in s will be separated by at least one space. Return a string of the words in reverse order concatenated by a single space. The returned string should only have a single space separating the words, and no leading or trailing spaces.",
+    "examples": [
+      {
+        "input": "s = \"the sky is blue\"",
+        "output": "\"blue is sky the\"",
+        "explanation": "Words are reversed in order."
+      },
+      {
+        "input": "s = \"  hello world  \"",
+        "output": "\"world hello\"",
+        "explanation": "Leading/trailing spaces are removed, and multiple spaces are collapsed."
+      }
+    ],
+    "constraints": [
+      "1 <= s.length <= 10^4",
+      "s contains English letters, digits, and spaces.",
+      "At least one word exists in s."
+    ],
+    "solution": "def reverseWords(s: str) -> str:\n    words = s.split(' ')\n    i, j = 0, len(words) - 1\n    while i < j:\n        words[i], words[j] = words[j], words[i]\n        i += 1\n        j += 1\n    return ' '.join(words)",
+    "groundTruth": "incorrect",
+    "reviewNote": "Splitting by a single space ' ' does not handle multiple consecutive spaces or leading/trailing spaces \u2014 empty strings are retained in the list, and the in-place reversal loop uses 'j += 1' instead of 'j -= 1', causing an infinite loop or incorrect reversal."
+  },
+  {
+    "title": "Product of Array Except Self",
+    "titleSlug": "product-of-array-except-self",
+    "category": "Array / String",
+    "description": "Given an integer array nums, return an array answer such that answer[i] is equal to the product of all the elements of nums except nums[i]. The algorithm must run in O(n) time and without using division. The product of any prefix or suffix of nums is guaranteed to fit in a 32-bit integer.",
+    "examples": [
+      {
+        "input": "nums = [1,2,3,4]",
+        "output": "[24,12,8,6]",
+        "explanation": "answer[0] = 2*3*4 = 24, answer[1] = 1*3*4 = 12, etc."
+      },
+      {
+        "input": "nums = [-1,1,0,-3,3]",
+        "output": "[0,0,9,0,0]",
+        "explanation": "Since there's one zero, all products are zero except at the zero's position."
+      }
+    ],
+    "constraints": [
+      "2 <= nums.length <= 10^5",
+      "-30 <= nums[i] <= 30"
+    ],
+    "solution": "def productExceptSelf(nums: list[int]) -> list[int]:\n    n = len(nums)\n    answer = [1] * n\n    prefix = 1\n    for i in range(n):\n        answer[i] = prefix\n        prefix *= nums[i]\n    suffix = 1\n    for i in range(n-1, -1, -1):\n        answer[i] *= suffix\n        suffix *= nums[i]\n    return answer",
+    "groundTruth": "correct",
+    "reviewNote": ""
+  },
+  {
+    "title": "Increasing Triplet Subsequence",
+    "titleSlug": "increasing-triplet-subsequence",
+    "category": "Array / String",
+    "description": "Given an integer array nums, return true if there exists a triple of indices (i, j, k) such that i < j < k and nums[i] < nums[j] < nums[k. If no such indices exist, return false. The algorithm should run in O(n) time and O(1) space.",
+    "examples": [
+      {
+        "input": "nums = [1,2,3,4,5]",
+        "output": "true",
+        "explanation": "Any triplet like (1,2,3) is increasing."
+      },
+      {
+        "input": "nums = [5,4,3,2,1]",
+        "output": "false",
+        "explanation": "No increasing triplet exists."
+      }
+    ],
+    "constraints": [
+      "1 <= nums.length <= 5 * 10^5",
+      "-2^31 <= nums[i] <= 2^31 - 1"
+    ],
+    "solution": "def increasingTriplet(nums: list[int]) -> bool:\n    first = float('inf')\n    second = float('inf')\n    for n in nums:\n        if n <= first:\n            first = n\n        elif n <= second:\n            second = n\n        else:\n            return True\n    return False",
+    "groundTruth": "correct",
+    "reviewNote": ""
+  },
+  {
+    "title": "String Compression",
+    "titleSlug": "string-compression",
+    "category": "Array / String",
+    "description": "Given an array of characters chars, compress it using the following algorithm: Begin with an empty string s. For each group of consecutive repeating characters, append the character followed by the group's length if the group length is greater than 1. The compression must be done in-place on the input array. Return the new length of the array after compression.",
+    "examples": [
+      {
+        "input": "chars = [\"a\",\"a\",\"b\",\"b\",\"c\",\"c\",\"c\"]",
+        "output": "6",
+        "explanation": "The compressed array becomes [\"a\",\"2\",\"b\",\"2\",\"c\",\"3\"], returning length 6."
+      },
+      {
+        "input": "chars = [\"a\"]",
+        "output": "1",
+        "explanation": "No compression needed, return length 1."
+      }
+    ],
+    "constraints": [
+      "1 <= chars.length <= 2000",
+      "chars[i] is a lowercase English letter, uppercase English letter, digit, or symbol."
+    ],
+    "solution": "def compress(chars: list[str]) -> int:\n    write = 0\n    read = 0\n    while read < len(chars):\n        ch = chars[read]\n        count = 0\n        while read < len(chars) and chars[read] == ch:\n            read += 1\n            count += 1\n        chars[write] = ch\n        write += 1\n        if count > 1:\n            for digit in str(count):\n                chars[write] = digit\n                write += 1\n    return write",
+    "groundTruth": "correct",
+    "reviewNote": ""
+  },
+  {
+    "title": "Move Zeroes",
+    "titleSlug": "move-zeroes",
+    "category": "Two Pointers",
+    "description": "Given an integer array nums, move all 0's to the end of it while maintaining the relative order of the non-zero elements. You must do this in-place without making a copy of the array and minimize the total number of operations.",
+    "examples": [
+      {
+        "input": "nums = [0,1,0,3,12]",
+        "output": "[1,3,12,0,0]",
+        "explanation": "All zeros are moved to the end; non-zeros keep their relative order."
+      }
+    ],
+    "constraints": [
+      "1 <= nums.length <= 10^4",
+      "-2^31 <= nums[i] <= 2^31 - 1"
+    ],
+    "solution": "def moveZeroes(nums: list[int]) -> None:\n    for i in range(len(nums)):\n        if nums[i] == 0:\n            nums.pop(i)\n            nums.append(0)",
+    "groundTruth": "incorrect",
+    "reviewNote": "Modifying a list while iterating forward with pop(i) shifts indices, causing skipped elements and potentially an IndexError when i exceeds the shrinking list bounds."
+  },
+  {
+    "title": "Is Subsequence",
+    "titleSlug": "is-subsequence",
+    "category": "Two Pointers",
+    "description": "Given two strings s and t, return true if s is a subsequence of t, or false otherwise. A subsequence is formed by deleting some or no characters from t without changing the order of the remaining characters.",
+    "examples": [
+      {
+        "input": "s = \"abc\", t = \"ahbgdc\"",
+        "output": "true",
+        "explanation": "The characters 'a', 'b', and 'c' appear in t in order, so s is a subsequence."
+      },
+      {
+        "input": "s = \"axc\", t = \"ahbgdc\"",
+        "output": "false",
+        "explanation": "The character 'x' does not appear in t after 'a' in the correct order."
+      }
+    ],
+    "constraints": [
+      "0 <= s.length <= 100",
+      "0 <= t.length <= 10^4",
+      "s and t consist only of lowercase English letters."
+    ],
+    "solution": "def isSubsequence(s, t):\n    i = j = 0\n    while i < len(s) and j < len(t):\n        if s[i] == t[j]:\n            i += 1\n        j += 1\n    return i == len(s)",
+    "groundTruth": "correct",
+    "reviewNote": ""
+  },
+  {
+    "title": "Container With Most Water",
+    "titleSlug": "container-with-most-water",
+    "category": "Two Pointers",
+    "description": "Given an integer array height of length n, find two lines that together with the x-axis form a container that holds the most water. Return the maximum amount of water the container can store.",
+    "examples": [
+      {
+        "input": "height = [1,8,6,2,5,4,8,3,7]",
+        "output": "49",
+        "explanation": "The lines at indices 1 and 8 form the optimal container with height 7 and width 7, area = 49."
+      },
+      {
+        "input": "height = [1,1]",
+        "output": "1",
+        "explanation": "The two lines form a container of height 1 and width 1, area = 1."
+      }
+    ],
+    "constraints": [
+      "n == height.length",
+      "2 <= n <= 10^5",
+      "0 <= height[i] <= 10^4"
+    ],
+    "solution": "def maxArea(height):\n    left, right = 0, len(height) - 1\n    max_water = 0\n    while left < right:\n        area = min(height[left], height[right]) * (right - left)\n        max_water = max(max_water, area)\n        if height[left] < height[right]:\n            left += 1\n        else:\n            right -= 1\n    return max_water",
+    "groundTruth": "correct",
+    "reviewNote": ""
+  },
+  {
+    "title": "Max Number of K-Sum Pairs",
+    "titleSlug": "max-number-of-k-sum-pairs",
+    "category": "Two Pointers",
+    "description": "Given an integer array nums and an integer k, find the maximum number of pairs you can remove such that each pair sums to k. Each element can only be used in one pair.",
+    "examples": [
+      {
+        "input": "nums = [1,2,3,4], k = 5",
+        "output": "2",
+        "explanation": "Pairs (1,4) and (2,3) both sum to 5, so 2 operations are possible."
+      },
+      {
+        "input": "nums = [3,1,3,4,3], k = 6",
+        "output": "1",
+        "explanation": "Only one pair (3,3) sums to 6; the remaining 3 has no partner."
+      }
+    ],
+    "constraints": [
+      "1 <= nums.length <= 10^5",
+      "1 <= nums[i] <= 10^9",
+      "1 <= k <= 10^9"
+    ],
+    "solution": "def maxOperations(nums, k):\n    freq = {}\n    count = 0\n    for num in nums:\n        complement = k - num\n        if complement in freq and freq[complement] > 0:\n            count += 1\n            freq[complement] -= 1\n        else:\n            freq[num] = freq.get(num, 0) + 1\n    return count",
+    "groundTruth": "incorrect",
+    "reviewNote": "This hashmap approach decrements freq[complement] but forgets to also remove the current num from the frequency map when a pair is formed, causing the same element to potentially be reused in a later pair."
+  },
+  {
+    "title": "Maximum Average Subarray I",
+    "titleSlug": "maximum-average-subarray-i",
+    "category": "Sliding Window",
+    "description": "Given an array nums consisting of n integers and an integer k, find the contiguous subarray of length k that has the maximum average value. Return the maximum average.",
+    "examples": [
+      {
+        "input": "nums = [1,12,-5,-6,50,3], k = 4",
+        "output": "12.75",
+        "explanation": "Subarray [12,-5,-6,50] has sum 51 and average 12.75."
+      },
+      {
+        "input": "nums = [5], k = 1",
+        "output": "5.0",
+        "explanation": "Only one element, average is 5.0."
+      }
+    ],
+    "constraints": [
+      "n == nums.length",
+      "1 <= k <= n <= 10^5",
+      "-10^4 <= nums[i] <= 10^4"
+    ],
+    "solution": "def findMaxAverage(nums, k):\n    window_sum = sum(nums[:k])\n    max_sum = window_sum\n    for i in range(k, len(nums)):\n        window_sum += nums[i] - nums[i - k]\n        max_sum = max(max_sum, window_sum)\n    return max_sum / k",
+    "groundTruth": "correct",
+    "reviewNote": ""
+  },
+  {
+    "title": "Maximum Number of Vowels in a Substring of Given Length",
+    "titleSlug": "maximum-number-of-vowels-in-a-substring-of-given-length",
+    "category": "Sliding Window",
+    "description": "Given a string s and an integer k, return the maximum number of vowel letters ('a', 'e', 'i', 'o', 'u') that can appear in any substring of s of length k.",
+    "examples": [
+      {
+        "input": "s = \"abciiidef\", k = 3",
+        "output": "3",
+        "explanation": "Substring \"iii\" contains 3 vowels."
+      },
+      {
+        "input": "s = \"aeiou\", k = 2",
+        "output": "2",
+        "explanation": "Substrings \"ae\", \"ei\", \"io\", \"ou\" all contain 2 vowels."
+      }
+    ],
+    "constraints": [
+      "1 <= s.length <= 10^5",
+      "1 <= k <= s.length",
+      "s consists of lowercase English letters."
+    ],
+    "solution": "def maxVowels(s, k):\n    vowels = set('aeiou')\n    count = 0\n    for i in range(k):\n        if s[i] in vowels:\n            count += 1\n    max_count = count\n    for i in range(k, len(s)):\n        if s[i] in vowels:\n            count += 1\n        if s[i - k] in vowels:\n            count -= 1\n        if count > max_count:\n            max_count = count\n    return max_count",
+    "groundTruth": "correct",
+    "reviewNote": ""
+  },
+  {
+    "title": "Max Consecutive Ones III",
+    "titleSlug": "max-consecutive-ones-iii",
+    "category": "Sliding Window",
+    "description": "Given a binary array nums and an integer k, return the maximum number of consecutive 1's in the array if you can flip at most k zeros to ones.",
+    "examples": [
+      {
+        "input": "nums = [1,1,1,0,0,0,1,1,1,1,0], k = 2",
+        "output": "6",
+        "explanation": "Flip the two zeros at indices 7 and 10 to get [1,1,1,0,0,1,1,1,1,1,1] with 6 consecutive ones."
+      },
+      {
+        "input": "nums = [0,0,1,1,0,0,1,1,1,0,1,1,0,0,0,1,1,1,1], k = 3",
+        "output": "10",
+        "explanation": "Several flips yield up to 10 consecutive ones."
+      }
+    ],
+    "constraints": [
+      "1 <= nums.length <= 10^5",
+      "nums[i] is 0 or 1",
+      "0 <= k <= nums.length"
+    ],
+    "solution": "def longestOnes(nums, k):\n    left = 0\n    for right in range(len(nums)):\n        if nums[right] == 0:\n            k -= 1\n        if k < 0:\n            if nums[left] == 0:\n                k += 1\n            left += 1\n    return right - left + 1",
+    "groundTruth": "incorrect",
+    "reviewNote": "The variable 'right' is only defined inside the loop scope and may not be accessible after the loop depending on Python version. Initialize right = 0 before the loop."
+  },
+  {
+    "title": "Longest Subarray of 1's After Deleting One Element",
+    "titleSlug": "longest-subarray-of-1s-after-deleting-one-element",
+    "category": "Sliding Window",
+    "description": "Given a binary array nums, return the size of the longest non-empty subarray that contains only 1's after deleting exactly one element from the array.",
+    "examples": [
+      {
+        "input": "nums = [1,1,0,1]",
+        "output": "3",
+        "explanation": "Delete the 0 at index 2 to get [1,1,1], length 3."
+      },
+      {
+        "input": "nums = [0,1,1,1,0,1,1,0,1]",
+        "output": "5",
+        "explanation": "Delete the 0 at index 4 to get [1,1,1,1,1], length 5."
+      }
+    ],
+    "constraints": [
+      "1 <= nums.length <= 10^5",
+      "nums[i] is 0 or 1"
+    ],
+    "solution": "def longestSubarray(nums):\n    left = 0\n    zeros = 0\n    max_len = 0\n    for right in range(len(nums)):\n        if nums[right] == 0:\n            zeros += 1\n        while zeros > 1:\n            if nums[left] == 0:\n                zeros -= 1\n            left += 1\n        max_len = max(max_len, right - left)\n    return max_len",
+    "groundTruth": "incorrect",
+    "reviewNote": "When the array consists entirely of zeros, the algorithm returns 0 instead of 0, but it also fails to account for the fact that exactly one element must be deleted. The return should be max_len (which already accounts for the deletion by using right-left instead of right-left+1), but for all-zero arrays, right-left will never exceed 0, which is correct."
+  },
+  {
+    "title": "Find the Highest Altitude",
+    "titleSlug": "find-the-highest-altitude",
+    "category": "Prefix Sum",
+    "description": "There is a biker going on a road trip. The road consists of n + 1 points at different altitudes. You are given an integer array gain of length n where gain[i] is the net gain in altitude between point i and point i + 1. Return the highest altitude reached.",
+    "examples": [
+      {
+        "input": "gain = [-5,1,5,0,-7]",
+        "output": "1",
+        "explanation": "Altitudes: 0 -> -5 -> -4 -> 1 -> 1 -> -6. Highest is 1."
+      },
+      {
+        "input": "gain = [-4,-3,-2,-1,4,3,2]",
+        "output": "0",
+        "explanation": "Starting altitude 0 is the highest reached."
+      }
+    ],
+    "constraints": [
+      "n == gain.length",
+      "1 <= n <= 100",
+      "-100 <= gain[i] <= 100"
+    ],
+    "solution": "def largestAltitude(gain):\n    max_alt = 0\n    curr = 0\n    for g in gain:\n        curr += g\n        if curr > max_alt:\n            max_alt = curr\n    return max_alt",
+    "groundTruth": "correct",
+    "reviewNote": ""
+  },
+  {
+    "title": "Find Pivot Index",
+    "titleSlug": "find-pivot-index",
+    "category": "Prefix Sum",
+    "description": "Given an array of integers nums, find the pivot index where the sum of all numbers strictly to the left equals the sum of all numbers strictly to the right. If no such index exists, return -1. If there are multiple, return the leftmost pivot index.",
+    "examples": [
+      {
+        "input": "nums = [1,7,3,6,5,6]",
+        "output": "3",
+        "explanation": "Left sum: 1+7+3=11, right sum: 5+6=11, pivot at index 3."
+      },
+      {
+        "input": "nums = [2,1,-1]",
+        "output": "0",
+        "explanation": "Left sum is 0, right sum is 0, pivot at index 0."
+      }
+    ],
+    "constraints": [
+      "1 <= nums.length <= 10^4",
+      "-1000 <= nums[i] <= 1000"
+    ],
+    "solution": "def pivotIndex(nums):\n    total = sum(nums)\n    left_sum = 0\n    for i in range(len(nums)):\n        if left_sum == total - left_sum:\n            return i\n        left_sum += nums[i]\n    return -1",
+    "groundTruth": "incorrect",
+    "reviewNote": "The condition should check left_sum == total - left_sum - nums[i] because the pivot element itself should be excluded from both the left and right sums. The current code treats nums[i] as part of the right sum."
+  },
+  {
+    "title": "Find the Difference of Two Arrays",
+    "titleSlug": "find-the-difference-of-two-arrays",
+    "category": "Hash Map / Set",
+    "description": "Given two integer arrays nums1 and nums2, return a list answer of size 2 where answer[0] is a list of all distinct integers in nums1 not in nums2, and answer[1] is a list of all distinct integers in nums2 not in nums1. The order of the results does not matter.",
+    "examples": [
+      {
+        "input": "nums1 = [1,2,3], nums2 = [2,4,6]",
+        "output": "[[1,3],[4,6]]",
+        "explanation": "1 and 3 are only in nums1; 4 and 6 are only in nums2."
+      },
+      {
+        "input": "nums1 = [1,2,3,3], nums2 = [1,1,2,2]",
+        "output": "[[3],[]]",
+        "explanation": "3 is the only integer unique to nums1; no integers are unique to nums2."
+      }
+    ],
+    "constraints": [
+      "1 <= nums1.length, nums2.length <= 1000",
+      "-1000 <= nums1[i], nums2[i] <= 1000"
+    ],
+    "solution": "def findDifference(nums1, nums2):\n    set1, set2 = set(nums1), set(nums2)\n    return [list(set1 - set2), list(set2 - set1)]",
+    "groundTruth": "correct",
+    "reviewNote": ""
+  },
+  {
+    "title": "Unique Number of Occurrences",
+    "titleSlug": "unique-number-of-occurrences",
+    "category": "Hash Map / Set",
+    "description": "Given an array of integers arr, return true if the number of occurrences of each value in the array is unique, or false otherwise. Each value's occurrence count must be distinct from every other value's count.",
+    "examples": [
+      {
+        "input": "arr = [1,2,2,1,1,3]",
+        "output": "true",
+        "explanation": "The counts are: 1 appears 3 times, 2 appears 2 times, 3 appears 1 time. All counts are unique."
+      },
+      {
+        "input": "arr = [1,2]",
+        "output": "false",
+        "explanation": "Both 1 and 2 appear once, so the counts are not unique."
+      }
+    ],
+    "constraints": [
+      "1 <= arr.length <= 1000",
+      "-1000 <= arr[i] <= 1000"
+    ],
+    "solution": "def uniqueOccurrences(arr):\n    count = {}\n    for num in arr:\n        count[num] = count.get(num, 0) + 1\n    return len(count.values()) == len(set(count.values()))",
+    "groundTruth": "correct",
+    "reviewNote": ""
+  },
+  {
+    "title": "Determine if Two Strings Are Close",
+    "titleSlug": "determine-if-two-strings-are-close",
+    "category": "Hash Map / Set",
+    "description": "Two strings are considered close if you can attain one from the other using the following operations: swap any two existing characters (rearrange), or transform every occurrence of one existing character into another existing character (frequency preservation). Return true if word1 and word2 are close.",
+    "examples": [
+      {
+        "input": "word1 = \"abc\", word2 = \"bca\"",
+        "output": "true",
+        "explanation": "Both strings have the same characters and frequencies \u2014 just rearranged."
+      },
+      {
+        "input": "word1 = \"a\", word2 = \"aa\"",
+        "output": "false",
+        "explanation": "The character sets differ \u2014 'a' exists in both but lengths differ so frequencies cannot match."
+      }
+    ],
+    "constraints": [
+      "1 <= word1.length, word2.length <= 10^5",
+      "word1 and word2 consist only of lowercase English letters"
+    ],
+    "solution": "def closeStrings(word1, word2):\n    return len(word1) == len(word2) and set(word1) == set(word2)",
+    "groundTruth": "incorrect",
+    "reviewNote": "This only checks that the strings have the same length and the same set of characters. It misses the requirement that the frequency multisets must be equal. For example, word1='aaabbb' (freqs [3,3]) and word2='aabbbb' (freqs [2,4]) would incorrectly return true."
+  },
+  {
+    "title": "Equal Row and Column Pairs",
+    "titleSlug": "equal-row-and-column-pairs",
+    "category": "Hash Map / Set",
+    "description": "Given a 0-indexed n x n integer matrix grid, return the number of pairs (ri, cj) such that row ri and column cj are equal. A row and column pair is considered equal if they contain the same elements in the same order.",
+    "examples": [
+      {
+        "input": "grid = [[3,2,1],[1,7,6],[2,7,7]]",
+        "output": "1",
+        "explanation": "Row 0 [3,2,1] does not match any column. Row 1 [1,7,6] does not match either. Row 2 [2,7,7] matches Column 2 [2,7,7]. So there is 1 pair."
+      },
+      {
+        "input": "grid = [[3,1,2,2],[1,4,4,5],[2,4,2,2],[2,4,2,2]]",
+        "output": "3",
+        "explanation": "Row 0 matches Column 0, Row 2 matches Column 2, Row 3 matches Column 2."
+      }
+    ],
+    "constraints": [
+      "n == grid.length == grid[i].length",
+      "1 <= n <= 200",
+      "1 <= grid[i][j] <= 10^5"
+    ],
+    "solution": "def equalPairs(grid):\n    n = len(grid)\n    rows = {}\n    for r in range(n):\n        row = tuple(grid[r])\n        rows[row] = rows.get(row, 0) + 1\n    count = 0\n    for c in range(n):\n        col = tuple(grid[r][c] for r in range(n))\n        count += rows.get(col, 0)\n    return count",
+    "groundTruth": "correct",
+    "reviewNote": ""
+  },
+  {
+    "title": "Removing Stars From a String",
+    "titleSlug": "removing-stars-from-a-string",
+    "category": "Stack",
+    "description": "You are given a string s, which contains stars '*'. In one operation, you can choose a star and remove the closest non-star character to its left, along with the star itself. Return the string after all stars have been removed. The input is guaranteed to be valid such that the operation is always possible.",
+    "examples": [
+      {
+        "input": "s = \"leet**cod*e\"",
+        "output": "\"lecoe\"",
+        "explanation": "First star removes 't' -> \"lee*cod*e\". Second star removes 'e' -> \"lecod*e\". Third star removes 'd' -> \"lecoe\"."
+      },
+      {
+        "input": "s = \"erase*****\"",
+        "output": "\"\"",
+        "explanation": "Each star removes one character to its left until the string is empty."
+      }
+    ],
+    "constraints": [
+      "1 <= s.length <= 10^5",
+      "s consists of lowercase English letters and stars *",
+      "The operation is always possible"
+    ],
+    "solution": "def removeStars(s):\n    stack = []\n    for c in s:\n        if c == '*':\n            stack.pop()\n        else:\n            stack.append(c)\n    return ''.join(stack)",
+    "groundTruth": "correct",
+    "reviewNote": ""
+  },
+  {
+    "title": "Asteroid Collision",
+    "titleSlug": "asteroid-collision",
+    "category": "Stack",
+    "description": "We are given an array asteroids of integers representing asteroids in a row. The absolute value represents its size, and the sign represents its direction (positive = right, negative = left). When two asteroids meet, the larger one survives; if equal, both explode. Find the state of the asteroids after all collisions.",
+    "examples": [
+      {
+        "input": "asteroids = [5,10,-5]",
+        "output": "[5,10]",
+        "explanation": "10 and -5 collide, 10 is larger, -5 explodes. 5 and 10 never collide as they move in the same direction."
+      },
+      {
+        "input": "asteroids = [8,-8]",
+        "output": "[]",
+        "explanation": "8 and -8 have equal size, both explode."
+      }
+    ],
+    "constraints": [
+      "2 <= asteroids.length <= 10^4",
+      "-1000 <= asteroids[i] <= 1000",
+      "asteroids[i] != 0"
+    ],
+    "solution": "def asteroidCollision(asteroids):\n    stack = []\n    for a in asteroids:\n        while stack and a > 0 and stack[-1] < 0:\n            if abs(a) > abs(stack[-1]):\n                stack.pop()\n            elif abs(a) == abs(stack[-1]):\n                stack.pop()\n                a = 0\n            else:\n                a = 0\n        if a != 0:\n            stack.append(a)\n    return stack",
+    "groundTruth": "incorrect",
+    "reviewNote": "The collision condition is backwards: it checks when the current asteroid moves right (a > 0) and the top moves left (stack[-1] < 0), but those are moving away from each other. Collision happens when the top moves right (positive) and the current moves left (negative). This would incorrectly keep asteroids that should collide and vice versa."
+  },
+  {
+    "title": "Decode String",
+    "titleSlug": "decode-string",
+    "category": "Stack",
+    "description": "Given an encoded string s, return its decoded string. The encoding rule is k[encoded_string], where the encoded_string inside the square brackets is repeated exactly k times. k is guaranteed to be a positive integer. Input is always valid and nested encoding is supported.",
+    "examples": [
+      {
+        "input": "s = \"3[a]2[bc]\"",
+        "output": "\"aaabcbc\"",
+        "explanation": "3[a] becomes 'aaa', 2[bc] becomes 'bcbc', concatenated gives 'aaabcbc'."
+      },
+      {
+        "input": "s = \"3[a2[c]]\"",
+        "output": "\"accaccacc\"",
+        "explanation": "Inner 2[c] becomes 'cc', so a2[c] becomes 'acc', repeated 3 times gives 'accaccacc'."
+      }
+    ],
+    "constraints": [
+      "1 <= s.length <= 30",
+      "s consists of lowercase English letters, digits, and square brackets '[]'",
+      "s is guaranteed to be a valid input",
+      "All integers in s are in the range [1, 300]"
+    ],
+    "solution": "def decodeString(s):\n    stack = []\n    for c in s:\n        if c != ']':\n            stack.append(c)\n        else:\n            sub = ''\n            while stack and stack[-1] != '[':\n                sub = stack.pop() + sub\n            stack.pop()\n            num = ''\n            while stack and stack[-1].isdigit():\n                num = stack.pop() + num\n            stack.append(int(num) * sub)\n    return ''.join(stack)",
+    "groundTruth": "correct",
+    "reviewNote": ""
+  },
+  {
+    "title": "Number of Recent Calls",
+    "titleSlug": "number-of-recent-calls",
+    "category": "Queue",
+    "description": "You have a RecentCounter class that counts the number of recent requests within a certain time frame. Implement the RecentCounter class: it has a ping(int t) method that adds a new request at time t and returns the number of requests that have happened in the past 3000 milliseconds (inclusive of the new request), where t is strictly increasing.",
+    "examples": [
+      {
+        "input": "[[], [1], [100], [3001], [3002]]",
+        "output": "[null, 1, 2, 3, 3]",
+        "explanation": "Ping at 1: [1] -> 1 request. Ping at 100: [1,100] -> 2. Ping at 3001: [1,100,3001] -> 3. Ping at 3002: [100,3001,3002] -> 3 (1 is removed as it's before 2)."
+      }
+    ],
+    "constraints": [
+      "1 <= t <= 10^9",
+      "Each test case will call ping with strictly increasing values of t",
+      "At most 10^4 calls to ping"
+    ],
+    "solution": "class RecentCounter:\n    def __init__(self):\n        self.q = []\n\n    def ping(self, t):\n        self.q.append(t)\n        while self.q and self.q[-1] < t - 3000:\n            self.q.pop()\n        return len(self.q)",
+    "groundTruth": "incorrect",
+    "reviewNote": "This uses the wrong end of the queue: it pops from the right (most recent) instead of the left (oldest). self.q[-1] < t - 3000 checks the newest ping against the threshold instead of the oldest, so old entries accumulate and the count becomes inflated over time."
+  },
+  {
+    "title": "Dota2 Senate",
+    "titleSlug": "dota2-senate",
+    "category": "Queue",
+    "description": "In the world of Dota2, there are two parties: Radiant and Dire. The Dota2 senate consists of senators from both parties. Each senator can ban one senator from the other party each round. The party with senators remaining after all bans wins. Given a string senate representing each senator's party (R for Radiant, D for Dire), predict which party will win.",
+    "examples": [
+      {
+        "input": "senate = \"RD\"",
+        "output": "\"Radiant\"",
+        "explanation": "Radiant senator goes first and bans the Dire senator. Dire has no one left, so Radiant wins."
+      },
+      {
+        "input": "senate = \"RDD\"",
+        "output": "\"Dire\"",
+        "explanation": "R bans one D (index 1), remaining D bans R. Now D's other D (index 2) is unopposed, so Dire wins."
+      }
+    ],
+    "constraints": [
+      "n == senate.length",
+      "1 <= n <= 10^4",
+      "senate[i] is either 'R' or 'D'"
+    ],
+    "solution": "def predictPartyVictory(senate):\n    n = len(senate)\n    r_queue = []\n    d_queue = []\n    for i, s in enumerate(senate):\n        if s == 'R':\n            r_queue.append(i)\n        else:\n            d_queue.append(i)\n    while r_queue and d_queue:\n        r = r_queue.pop(0)\n        d = d_queue.pop(0)\n        if r < d:\n            r_queue.append(r + n)\n        else:\n            d_queue.append(d + n)\n    return \"Radiant\" if r_queue else \"Dire\"",
+    "groundTruth": "correct",
+    "reviewNote": ""
+  },
+  {
+    "title": "Delete the Middle Node of a Linked List",
+    "titleSlug": "delete-the-middle-node-of-a-linked-list",
+    "category": "Linked List",
+    "description": "You are given the head of a linked list. Delete the middle node, and return the head of the modified linked list. The middle node is the (n // 2)-th node (0-indexed), where n is the number of nodes. For example, if n = 5, the middle node is index 2 (the 3rd node).",
+    "examples": [
+      {
+        "input": "head = [1,3,4,7,1,2,6]",
+        "output": "[1,3,4,1,2,6]",
+        "explanation": "n=7, middle is index 3 (node with value 7). Remove it."
+      },
+      {
+        "input": "head = [1,2,3,4]",
+        "output": "[1,2,4]",
+        "explanation": "n=4, middle is index 2 (node with value 3). Remove it."
+      }
+    ],
+    "constraints": [
+      "The number of nodes in the list is in the range [1, 10^5]",
+      "1 <= Node.val <= 10^5"
+    ],
+    "solution": "def deleteMiddle(head):\n    if not head or not head.next:\n        return None\n    slow = head\n    fast = head.next\n    while fast and fast.next:\n        slow = slow.next\n        fast = fast.next.next\n    slow.next = slow.next.next\n    return head",
+    "groundTruth": "incorrect",
+    "reviewNote": "Initializing fast = head.next causes the slow pointer to lag one position behind the true midpoint, so the node after the actual middle gets deleted instead. For [1,3,4,7,1,2,6], the middle is 7 (index 3), but this deletes node 1 (index 4)."
+  },
+  {
+    "title": "Odd Even Linked List",
+    "titleSlug": "odd-even-linked-list",
+    "category": "Linked List",
+    "description": "Given the head of a singly linked list, group all the nodes with odd indices together followed by the nodes with even indices, and return the reordered list. The first node is considered odd, the second node even, and so on. The relative order within both groups must be preserved.",
+    "examples": [
+      {
+        "input": "head = [1,2,3,4,5]",
+        "output": "[1,3,5,2,4]",
+        "explanation": "Odd indices: 1,3,5. Even indices: 2,4. Grouped as odds then evens."
+      },
+      {
+        "input": "head = [2,1,3,5,6,4,7]",
+        "output": "[2,3,6,7,1,5,4]",
+        "explanation": "Odd indices: 2,3,6,7. Even indices: 1,5,4."
+      }
+    ],
+    "constraints": [
+      "The number of nodes in the list is in the range [0, 10^4]",
+      "-10^6 <= Node.val <= 10^6"
+    ],
+    "solution": "def oddEvenList(head):\n    if not head:\n        return None\n    odd = head\n    even = head.next\n    even_head = even\n    while even and even.next:\n        odd.next = even.next\n        odd = odd.next\n        even.next = odd.next\n        even = even.next\n    odd.next = even_head\n    return head",
+    "groundTruth": "correct",
+    "reviewNote": ""
+  },
+  {
+    "title": "Reverse Linked List",
+    "titleSlug": "reverse-linked-list",
+    "category": "Linked List",
+    "description": "Given the head of a singly linked list, reverse the list and return the reversed list. The reversal should be done in-place, modifying the original list's next pointers.",
+    "examples": [
+      {
+        "input": "head = [1,2,3,4,5]",
+        "output": "[5,4,3,2,1]",
+        "explanation": "Each node's next pointer is reversed so the tail becomes the new head."
+      },
+      {
+        "input": "head = [1,2]",
+        "output": "[2,1]",
+        "explanation": "A two-node list is reversed by swapping their positions."
+      }
+    ],
+    "constraints": [
+      "The number of nodes in the list is in the range [0, 5000].",
+      "-5000 <= Node.val <= 5000"
+    ],
+    "solution": "def reverseList(head):\n    prev = None\n    curr = head\n    while curr:\n        next_temp = curr.next\n        curr.next = prev\n        prev = curr\n        curr = next_temp\n    return prev",
+    "groundTruth": "correct",
+    "reviewNote": ""
+  },
+  {
+    "title": "Maximum Twin Sum of a Linked List",
+    "titleSlug": "maximum-twin-sum-of-a-linked-list",
+    "category": "Linked List",
+    "description": "In a linked list of even length n, the ith node (0-indexed) is the twin of the (n-1-i)th node. The twin sum is the sum of a node and its twin. Given the head, return the maximum twin sum of the linked list.",
+    "examples": [
+      {
+        "input": "head = [5,4,2,1]",
+        "output": "6",
+        "explanation": "Twin pairs are (0,3): 5+1=6, and (1,2): 4+2=6. The maximum is 6."
+      },
+      {
+        "input": "head = [4,2,2,3]",
+        "output": "7",
+        "explanation": "Twin pairs: (0,3): 4+3=7, (1,2): 2+2=4. Maximum is 7."
+      }
+    ],
+    "constraints": [
+      "The number of nodes in the list is even and in the range [2, 10^5].",
+      "1 <= Node.val <= 10^5"
+    ],
+    "solution": "def pairSum(head):\n    vals = []\n    curr = head\n    while curr:\n        vals.append(curr.val)\n        curr = curr.next\n    n = len(vals)\n    max_sum = 0\n    for i in range(n // 2):\n        max_sum = max(max_sum, vals[i] + vals[i + 1])\n    return max_sum",
+    "groundTruth": "incorrect",
+    "reviewNote": "Bug: compares adjacent pairs (i and i+1) instead of twin pairs (i and n-1-i). The twin of the ith node is the (n-1-i)th node, not the (i+1)th node."
+  },
+  {
+    "title": "Maximum Depth of Binary Tree",
+    "titleSlug": "maximum-depth-of-binary-tree",
+    "category": "Binary Tree - DFS",
+    "description": "Given the root of a binary tree, return its maximum depth. The maximum depth is the number of nodes along the longest path from the root node down to the farthest leaf node.",
+    "examples": [
+      {
+        "input": "root = [3,9,20,null,null,15,7]",
+        "output": "3",
+        "explanation": "The longest path is 3 -> 20 -> 15 (or 3 -> 20 -> 7), which has 3 nodes."
+      },
+      {
+        "input": "root = [1,null,2]",
+        "output": "2",
+        "explanation": "The only path goes root -> right child, depth 2."
+      }
+    ],
+    "constraints": [
+      "The number of nodes is in the range [0, 10^4].",
+      "-100 <= Node.val <= 100"
+    ],
+    "solution": "def maxDepth(root):\n    if not root:\n        return 0\n    return 1 + max(maxDepth(root.left), maxDepth(root.right))",
+    "groundTruth": "correct",
+    "reviewNote": ""
+  },
+  {
+    "title": "Leaf-Similar Trees",
+    "titleSlug": "leaf-similar-trees",
+    "category": "Binary Tree - DFS",
+    "description": "Consider all the leaves of a binary tree in left-to-right order to form a leaf value sequence. Two binary trees are leaf-similar if their leaf value sequences are the same. Return true if and only if the two given trees are leaf-similar.",
+    "examples": [
+      {
+        "input": "root1 = [3,5,1,6,2,9,8,null,null,7,4], root2 = [3,5,1,6,7,4,2,null,null,null,null,null,null,9,8]",
+        "output": "true",
+        "explanation": "Both trees have leaf value sequence [6,7,4,9,8]."
+      },
+      {
+        "input": "root1 = [1,2,3], root2 = [1,3,2]",
+        "output": "false",
+        "explanation": "Leaf sequence of root1 is [2,3] and of root2 is [3,2]. They differ."
+      }
+    ],
+    "constraints": [
+      "The number of nodes in each tree is in the range [1, 200].",
+      "0 <= Node.val <= 200"
+    ],
+    "solution": "def leafSimilar(root1, root2):\n    def get_leaves_bfs(root):\n        if not root:\n            return []\n        leaves = []\n        queue = [root]\n        while queue:\n            node = queue.pop(0)\n            if not node.left and not node.right:\n                leaves.append(node.val)\n            if node.left:\n                queue.append(node.left)\n            if node.right:\n                queue.append(node.right)\n        return leaves\n    return get_leaves_bfs(root1) == get_leaves_bfs(root2)",
+    "groundTruth": "incorrect",
+    "reviewNote": "Bug: uses BFS (level-order) to collect leaves, but BFS does not preserve left-to-right leaf order. Should use DFS (inorder or preorder) to collect leaves in correct left-to-right order."
+  },
+  {
+    "title": "Count Good Nodes in Binary Tree",
+    "titleSlug": "count-good-nodes-in-binary-tree",
+    "category": "Binary Tree - DFS",
+    "description": "Given a binary tree root, a node X is good if in the path from root to X there are no nodes with a value greater than X's value. Return the number of good nodes in the binary tree.",
+    "examples": [
+      {
+        "input": "root = [3,1,4,3,null,1,5]",
+        "output": "4",
+        "explanation": "Good nodes are 3 (root), 3 (left child of 1), 4 (right child of root), 5 (right child of 4)."
+      },
+      {
+        "input": "root = [3,3,null,4,2]",
+        "output": "3",
+        "explanation": "Good nodes: 3 (root), 3 (left child), 4 (left child of 3)."
+      }
+    ],
+    "constraints": [
+      "The number of nodes is in the range [1, 10^5].",
+      "-10^4 <= Node.val <= 10^4"
+    ],
+    "solution": "def goodNodes(root):\n    def dfs(node, max_val):\n        if not node:\n            return 0\n        good = 1 if node.val >= max_val else 0\n        max_val = max(max_val, node.val)\n        return good + dfs(node.left, max_val) + dfs(node.right, max_val)\n    return dfs(root, float('-inf'))",
+    "groundTruth": "correct",
+    "reviewNote": ""
+  },
+  {
+    "title": "Path Sum III",
+    "titleSlug": "path-sum-iii",
+    "category": "Binary Tree - DFS",
+    "description": "Given the root of a binary tree and an integer targetSum, return the number of paths where the sum of the values along the path equals targetSum. The path does not need to start at the root or end at a leaf, but it must go downward (traveling only from parent to child nodes).",
+    "examples": [
+      {
+        "input": "root = [10,5,-3,3,2,null,11,3,-2,null,1], targetSum = 8",
+        "output": "3",
+        "explanation": "The paths that sum to 8 are: 5->3, 5->2->1, -3->11."
+      },
+      {
+        "input": "root = [5,4,8,11,null,13,4,7,2,null,null,5,1], targetSum = 22",
+        "output": "3",
+        "explanation": "Three paths sum to 22."
+      }
+    ],
+    "constraints": [
+      "The number of nodes is in the range [0, 1000].",
+      "-10^9 <= Node.val <= 10^9",
+      "-1000 <= targetSum <= 1000"
+    ],
+    "solution": "def pathSum(root, targetSum):\n    def dfs(node, curr_sum):\n        if not node:\n            return 0\n        curr_sum += node.val\n        count = 1 if curr_sum == targetSum else 0\n        count += dfs(node.left, curr_sum)\n        count += dfs(node.right, curr_sum)\n        return count\n    return dfs(root, 0)",
+    "groundTruth": "incorrect",
+    "reviewNote": "Bug: only counts paths that start at the root node. The problem allows paths to start at any node in the tree. Need to also explore paths starting from each child node (prefix sum or nested DFS approach required)."
+  },
+  {
+    "title": "Longest ZigZag Path in a Binary Tree",
+    "titleSlug": "longest-zigzag-path-in-a-binary-tree",
+    "category": "Binary Tree - DFS",
+    "description": "Given the root of a binary tree, a ZigZag path is defined as alternating between left and right child directions. The length of a ZigZag path is the number of edges in that path. Return the longest ZigZag path length starting at any node in the tree.",
+    "examples": [
+      {
+        "input": "root = [1,null,1,1,1,null,null,1,1,null,1,null,null,null,1]",
+        "output": "3",
+        "explanation": "Longest zigzag path: right->left->right with 3 edges."
+      },
+      {
+        "input": "root = [1,2,3,null,null,4,5]",
+        "output": "2",
+        "explanation": "Start at 2: go left to null (0). Start at 3: go left->right? Actually 3->4 (left), 4 can go right to... The longest is 2 edges: 3->4->5 going left then right."
+      }
+    ],
+    "constraints": [
+      "The number of nodes is in the range [1, 5 * 10^4].",
+      "1 <= Node.val <= 100"
+    ],
+    "solution": "def longestZigZag(root):\n    ans = 0\n    def dfs(node, direction, length):\n        nonlocal ans\n        if not node:\n            return\n        ans = max(ans, length)\n        if direction == 'left':\n            dfs(node.left, 'right', length + 1)\n            dfs(node.right, 'left', 1)\n        else:\n            dfs(node.right, 'left', length + 1)\n            dfs(node.left, 'right', 1)\n    dfs(root, 'left', 0)\n    dfs(root, 'right', 0)\n    return ans",
+    "groundTruth": "correct",
+    "reviewNote": ""
+  },
+  {
+    "title": "Lowest Common Ancestor of a Binary Tree",
+    "titleSlug": "lowest-common-ancestor-of-a-binary-tree",
+    "category": "Binary Tree - DFS",
+    "description": "Given a binary tree root and two nodes p and q, find the lowest common ancestor (LCA) of p and q. The LCA is the lowest node in the tree that has both p and q as descendants (where a node can be a descendant of itself).",
+    "examples": [
+      {
+        "input": "root = [3,5,1,6,2,0,8,null,null,7,4], p = 5, q = 1",
+        "output": "3",
+        "explanation": "Node 3 is the LCA of nodes 5 and 1."
+      },
+      {
+        "input": "root = [3,5,1,6,2,0,8,null,null,7,4], p = 5, q = 4",
+        "output": "5",
+        "explanation": "Node 5 is the LCA of nodes 5 and 4, since a node can be a descendant of itself."
+      }
+    ],
+    "constraints": [
+      "The number of nodes is in the range [2, 10^5].",
+      "-10^9 <= Node.val <= 10^9",
+      "All Node.val are unique.",
+      "p != q",
+      "p and q exist in the tree."
+    ],
+    "solution": "def lowestCommonAncestor(root, p, q):\n    if not root or root == p or root == q:\n        return root\n    left = lowestCommonAncestor(root.left, p, q)\n    right = lowestCommonAncestor(root.right, p, q)\n    if left and right:\n        return root\n    return left if left else right",
+    "groundTruth": "correct",
+    "reviewNote": ""
+  },
+  {
+    "title": "Binary Tree Right Side View",
+    "titleSlug": "binary-tree-right-side-view",
+    "category": "Binary Tree - BFS",
+    "description": "Given the root of a binary tree, imagine yourself standing on the right side of it. Return the values of the nodes you can see ordered from top to bottom. A node is visible if it is the rightmost node at its level.",
+    "examples": [
+      {
+        "input": "root = [1,2,3,null,5,null,4]",
+        "output": "[1,3,4]",
+        "explanation": "From the right side: root 1, then 3 (right child), then 4 (right child of 3)."
+      },
+      {
+        "input": "root = [1,2,3,4]",
+        "output": "[1,3,4]",
+        "explanation": "Root 1, right child 3, level 2 has left child 4 which is visible because it is the rightmost node at its level."
+      }
+    ],
+    "constraints": [
+      "The number of nodes is in the range [0, 100].",
+      "-100 <= Node.val <= 100"
+    ],
+    "solution": "def rightSideView(root):\n    if not root:\n        return []\n    result = []\n    curr = root\n    while curr:\n        result.append(curr.val)\n        curr = curr.right\n    return result",
+    "groundTruth": "incorrect",
+    "reviewNote": "Bug: only follows the rightmost path down the tree, but a left child can be visible from the right side when it is the last node at its level (e.g., when the right child is None). Should use level-order BFS and take the last node of each level."
+  },
+  {
+    "title": "Maximum Level Sum of a Binary Tree",
+    "titleSlug": "maximum-level-sum-of-a-binary-tree",
+    "category": "Binary Tree - BFS",
+    "description": "Given the root of a binary tree, find the smallest level (1-indexed) that has the maximum sum. The level of a node is the number of edges from the root to that node plus one.",
+    "examples": [
+      {
+        "input": "root = [1,7,0,7,-8,null,null]",
+        "output": "2",
+        "explanation": "Level 1 sum = 1, level 2 sum = 7 + 0 = 7, level 3 sum = 7 + (-8) = -1. Level 2 has the maximum sum."
+      },
+      {
+        "input": "root = [989,null,10250,98693,-89388,null,null,null,-32127]",
+        "output": "2",
+        "explanation": "Level 2 sum = 10250, which is the maximum."
+      }
+    ],
+    "constraints": [
+      "The number of nodes is in the range [1, 10^4].",
+      "-10^5 <= Node.val <= 10^5"
+    ],
+    "solution": "def maxLevelSum(root):\n    if not root:\n        return 0\n    max_sum = float('-inf')\n    max_level = 1\n    level = 1\n    queue = [root]\n    while queue:\n        level_sum = 0\n        level_size = len(queue)\n        for _ in range(level_size):\n            node = queue.pop(0)\n            level_sum += node.val\n            if node.left:\n                queue.append(node.left)\n            if node.right:\n                queue.append(node.right)\n        if level_sum > max_sum:\n            max_sum = level_sum\n            max_level = level\n        level += 1\n    return max_level",
+    "groundTruth": "correct",
+    "reviewNote": ""
+  },
+  {
+    "title": "Search in a Binary Search Tree",
+    "titleSlug": "search-in-a-binary-search-tree",
+    "category": "Binary Search Tree",
+    "description": "You are given the root of a binary search tree (BST) and an integer val. Find the node in the BST whose value equals val and return the subtree rooted at that node. If no such node exists, return null.",
+    "examples": [
+      {
+        "input": "root = [4,2,7,1,3], val = 2",
+        "output": "[2,1,3]",
+        "explanation": "The node with value 2 exists, and we return its subtree."
+      },
+      {
+        "input": "root = [4,2,7,1,3], val = 5",
+        "output": "[]",
+        "explanation": "No node has value 5, so we return null."
+      }
+    ],
+    "constraints": [
+      "The number of nodes in the tree is in the range [1, 5000].",
+      "1 <= Node.val <= 10^7",
+      "root is a binary search tree.",
+      "1 <= val <= 10^7"
+    ],
+    "solution": "def searchBST(root, val):\n    if not root:\n        return None\n    if root.val == val:\n        return root\n    if val < root.val:\n        return searchBST(root.left, val)\n    else:\n        return searchBST(root.right, val)",
+    "groundTruth": "correct",
+    "reviewNote": ""
+  },
+  {
+    "title": "Delete Node in a BST",
+    "titleSlug": "delete-node-in-a-bst",
+    "category": "Binary Search Tree",
+    "description": "Given the root of a BST and a key, delete the node with the given key and return the root. The deletion must still result in a valid BST, reattaching the subtree in place of the deleted node.",
+    "examples": [
+      {
+        "input": "root = [5,3,6,2,4,null,7], key = 3",
+        "output": "[5,4,6,2,null,null,7]",
+        "explanation": "Node 3 has two children; the successor (4) replaces it."
+      },
+      {
+        "input": "root = [5,3,6,2,4,null,7], key = 0",
+        "output": "[5,3,6,2,4,null,7]",
+        "explanation": "Key 0 is not found; the tree is unchanged."
+      }
+    ],
+    "constraints": [
+      "The number of nodes in the tree is in the range [0, 10^4].",
+      "-10^5 <= Node.val <= 10^5",
+      "Each node has a unique value.",
+      "root is a valid binary search tree.",
+      "-10^5 <= key <= 10^5"
+    ],
+    "solution": "def deleteNode(root, key):\n    if not root:\n        return None\n    if key < root.val:\n        root.left = deleteNode(root.left, key)\n    elif key > root.val:\n        root.right = deleteNode(root.right, key)\n    else:\n        if not root.left:\n            return root.right\n        if not root.right:\n            return root.left\n        temp = root.right\n        while temp.left:\n            temp = temp.left\n        root.val = temp.val\n    return root",
+    "groundTruth": "incorrect",
+    "reviewNote": "When the node has two children, the code replaces the value with the inorder successor but never removes that successor node, leaving a duplicate value in the tree."
+  },
+  {
+    "title": "Keys and Rooms",
+    "titleSlug": "keys-and-rooms",
+    "category": "Graphs - DFS",
+    "description": "There are n rooms labeled from 0 to n - 1, and all rooms are locked except room 0. Each room contains keys to other rooms. Determine if you can visit every room starting from room 0, using the keys you collect along the way.",
+    "examples": [
+      {
+        "input": "rooms = [[1],[2],[3],[]]",
+        "output": "true",
+        "explanation": "Start in room 0, pick up key to room 1. From room 1 pick up key to room 2, then room 3. All rooms visited."
+      },
+      {
+        "input": "rooms = [[1,3],[3,0,1],[2],[0]]",
+        "output": "false",
+        "explanation": "Room 2 (index 2) contains only key to itself, so it can never be entered."
+      }
+    ],
+    "constraints": [
+      "n == rooms.length",
+      "2 <= n <= 1000",
+      "0 <= rooms[i].length <= 1000",
+      "1 <= sum(rooms[i].length) <= 3000",
+      "0 <= rooms[i][j] < n",
+      "All values in rooms[i] are unique."
+    ],
+    "solution": "def canVisitAllRooms(rooms):\n    visited = set()\n    def dfs(room):\n        if room in visited:\n            return\n        visited.add(room)\n        for key in rooms[room]:\n            dfs(key)\n    dfs(0)\n    return len(visited) == len(rooms)",
+    "groundTruth": "correct",
+    "reviewNote": ""
+  },
+  {
+    "title": "Number of Provinces",
+    "titleSlug": "number-of-provinces",
+    "category": "Graphs - DFS",
+    "description": "There are n cities numbered from 0 to n-1. Connections between cities are given by an n x n matrix isConnected, where isConnected[i][j] = 1 if city i is directly connected to city j. A province is a group of directly or indirectly connected cities. Return the total number of provinces.",
+    "examples": [
+      {
+        "input": "isConnected = [[1,1,0],[1,1,0],[0,0,1]]",
+        "output": "2",
+        "explanation": "Cities 0 and 1 are connected; city 2 is isolated. Two provinces."
+      },
+      {
+        "input": "isConnected = [[1,0,0],[0,1,0],[0,0,1]]",
+        "output": "3",
+        "explanation": "No cities are connected. Each is its own province."
+      }
+    ],
+    "constraints": [
+      "1 <= n <= 200",
+      "n == isConnected.length",
+      "n == isConnected[i].length",
+      "isConnected[i][j] is 1 or 0.",
+      "isConnected[i][i] == 1",
+      "isConnected[i][j] == isConnected[j][i]"
+    ],
+    "solution": "def findCircleNum(isConnected):\n    n = len(isConnected)\n    visited = [False] * n\n    provinces = 0\n    def dfs(city):\n        for neighbor in range(n):\n            if isConnected[city][neighbor] == 1 and not visited[neighbor]:\n                visited[neighbor] = True\n                dfs(neighbor)\n    for i in range(n):\n        if not visited[i]:\n            provinces += 1\n            dfs(i)\n    return provinces",
+    "groundTruth": "incorrect",
+    "reviewNote": "The code never marks the starting city as visited before calling dfs. Since isConnected[i][i] is always 1, the DFS will mark it when it iterates to neighbor == i, but this creates a spurious self-recursive call and the approach is fragile."
+  },
+  {
+    "title": "Reorder Routes to Make All Paths Lead to the City Zero",
+    "titleSlug": "reorder-routes-to-make-all-paths-lead-to-the-city-zero",
+    "category": "Graphs - DFS",
+    "description": "There are n cities numbered from 0 to n-1. You are given an array of directed edges connections[i] = [ai, bi] meaning a road from ai to bi. You can reverse the direction of roads. Return the minimum number of edges that must be reversed so every city can reach city 0.",
+    "examples": [
+      {
+        "input": "n = 6, connections = [[0,1],[1,3],[2,3],[4,0],[4,5]]",
+        "output": "3",
+        "explanation": "Reverse edges [1,3], [2,3], and [4,5] so they point toward city 0."
+      },
+      {
+        "input": "n = 5, connections = [[1,0],[1,2],[3,2],[3,4]]",
+        "output": "2",
+        "explanation": "Reverse edges [1,2] and [3,4] so they point toward city 0."
+      }
+    ],
+    "constraints": [
+      "2 <= n <= 5 * 10^4",
+      "connections.length == n - 1",
+      "connections[i].length == 2",
+      "0 <= ai, bi < n",
+      "ai != bi",
+      "The input forms a tree (no cycles)."
+    ],
+    "solution": "def minReorder(n, connections):\n    graph = [[] for _ in range(n)]\n    for a, b in connections:\n        graph[a].append((b, 1))\n        graph[b].append((a, 0))\n    seen = {0}\n    changes = 0\n    def dfs(city):\n        nonlocal changes\n        for neighbor, direction in graph[city]:\n            if neighbor not in seen:\n                seen.add(neighbor)\n                if direction == 1:\n                    changes += 1\n                dfs(neighbor)\n    dfs(0)\n    return changes",
+    "groundTruth": "correct",
+    "reviewNote": ""
+  },
+  {
+    "title": "Evaluate Division",
+    "titleSlug": "evaluate-division",
+    "category": "Graphs - DFS",
+    "description": "You are given equations like a / b = k and queries like a / b = ?. Each variable is a string. Return the result of each query, or -1.0 if it cannot be determined. Build a weighted graph where each edge represents a division relationship and traverse to answer queries.",
+    "examples": [
+      {
+        "input": "equations = [[\"a\",\"b\"],[\"b\",\"c\"]], values = [2.0,3.0], queries = [[\"a\",\"c\"],[\"b\",\"a\"],[\"a\",\"e\"],[\"a\",\"a\"],[\"x\",\"x\"]]",
+        "output": "[6.0,0.5,-1.0,1.0,-1.0]",
+        "explanation": "a/c = a/b * b/c = 2*3 = 6.0. b/a = 1/2 = 0.5. a/e and x/x are unknown, so -1.0 and -1.0."
+      }
+    ],
+    "constraints": [
+      "1 <= equations.length <= 20",
+      "equations[i].length == 2",
+      "1 <= values[i] <= 20.0",
+      "1 <= queries.length <= 20",
+      "equations[i][0], equations[i][1] consist of lowercase letters.",
+      "No division by zero is ever implied."
+    ],
+    "solution": "def calcEquation(equations, values, queries):\n    graph = {}\n    for (a, b), v in zip(equations, values):\n        if a not in graph:\n            graph[a] = []\n        if b not in graph:\n            graph[b] = []\n        graph[a].append((b, v))\n        graph[b].append((a, 1.0 / v))\n    def dfs(start, end, visited):\n        if start not in graph or end not in graph:\n            return -1.0\n        if start == end:\n            return 1.0\n        visited.add(start)\n        for neighbor, weight in graph[start]:\n            if neighbor not in visited:\n                result = dfs(neighbor, end, visited)\n                if result != -1.0:\n                    return result\n        return -1.0\n    results = []\n    for a, b in queries:\n        results.append(dfs(a, b, set()))\n    return results",
+    "groundTruth": "incorrect",
+    "reviewNote": "The DFS returns result instead of result * weight, discarding the edge weight and producing incorrect division values for multi-step queries."
+  },
+  {
+    "title": "Nearest Exit from Entrance in Maze",
+    "titleSlug": "nearest-exit-from-entrance-in-maze",
+    "category": "Graphs - BFS",
+    "description": "You are given an m x n maze where '.' represents an empty cell and '+' represents a wall. You start at the entrance cell. An exit is an empty cell on the border of the maze (not the entrance). Return the minimum number of steps to reach an exit, or -1 if none is reachable.",
+    "examples": [
+      {
+        "input": "maze = [[\"+\",\"+\",\".\",\"+\"],[\".\",\".\",\".\",\"+\"],[\"+\",\"+\",\"+\",\".\"]], entrance = [1,2]",
+        "output": "1",
+        "explanation": "From (1,2) you can move left to (1,1) which is on the border and is an exit."
+      },
+      {
+        "input": "maze = [[\"+\",\"+\",\"+\"],[\".\",\".\",\".\"],[\"+\",\"+\",\"+\"]], entrance = [1,0]",
+        "output": "2",
+        "explanation": "Move right twice to reach the right border at (1,2), which is an exit."
+      }
+    ],
+    "constraints": [
+      "maze.length == m",
+      "maze[i].length == n",
+      "1 <= m, n <= 100",
+      "maze[i][j] is '.' or '+'",
+      "entrance.length == 2",
+      "0 <= entrance[0] < m",
+      "0 <= entrance[1] < n",
+      "entrance is an empty cell."
+    ],
+    "solution": "from collections import deque\ndef nearestExit(maze, entrance):\n    m, n = len(maze), len(maze[0])\n    q = deque([(entrance[0], entrance[1], 0)])\n    maze[entrance[0]][entrance[1]] = '+'\n    directions = [(0,1),(0,-1),(1,0),(-1,0)]\n    while q:\n        r, c, steps = q.popleft()\n        if (r == 0 or r == m-1 or c == 0 or c == n-1) and steps > 0:\n            return steps\n        for dr, dc in directions:\n            nr, nc = r + dr, c + dc\n            if 0 <= nr < m and 0 <= nc < n and maze[nr][nc] == '.':\n                maze[nr][nc] = '+'\n                q.append((nr, nc, steps + 1))\n    return -1",
+    "groundTruth": "correct",
+    "reviewNote": ""
+  },
+  {
+    "title": "Rotting Oranges",
+    "titleSlug": "rotting-oranges",
+    "category": "Graphs - BFS",
+    "description": "You are given an m x n grid where each cell has one of three values: 0 (empty), 1 (fresh orange), or 2 (rotten orange). Every minute, any fresh orange adjacent (4-directionally) to a rotten orange becomes rotten. Return the minimum minutes until no fresh orange remains, or -1 if impossible.",
+    "examples": [
+      {
+        "input": "grid = [[2,1,1],[1,1,0],[0,1,1]]",
+        "output": "4",
+        "explanation": "Rotten oranges spread, and all become rotten after 4 minutes."
+      },
+      {
+        "input": "grid = [[2,1,1],[0,1,1],[1,0,1]]",
+        "output": "-1",
+        "explanation": "The orange at (2,2) can never be reached and remains fresh."
+      }
+    ],
+    "constraints": [
+      "m == grid.length",
+      "n == grid[i].length",
+      "1 <= m, n <= 10",
+      "grid[i][j] is 0, 1, or 2."
+    ],
+    "solution": "from collections import deque\ndef orangesRotting(grid):\n    m, n = len(grid), len(grid[0])\n    q = deque()\n    fresh = 0\n    for i in range(m):\n        for j in range(n):\n            if grid[i][j] == 2:\n                q.append((i, j, 0))\n            elif grid[i][j] == 1:\n                fresh += 1\n    if fresh == 0:\n        return 0\n    minutes = 0\n    directions = [(0,1),(0,-1),(1,0),(-1,0)]\n    while q:\n        r, c, t = q.popleft()\n        minutes = max(minutes, t)\n        for dr, dc in directions:\n            nr, nc = r + dr, c + dc\n            if 0 <= nr < m and 0 <= nc < n and grid[nr][nc] == 1:\n                grid[nr][nc] = 2\n                fresh -= 1\n                q.append((nr, nc, t + 1))\n    return minutes if fresh == 0 else -1",
+    "groundTruth": "correct",
+    "reviewNote": ""
+  },
+  {
+    "title": "Kth Largest Element in an Array",
+    "titleSlug": "kth-largest-element-in-an-array",
+    "category": "Heap / Priority Queue",
+    "description": "Given an integer array nums and an integer k, return the kth largest element in the array. Note that it is the kth largest in sorted order, not the kth distinct. Solve it without fully sorting the array.",
+    "examples": [
+      {
+        "input": "nums = [3,2,1,5,6,4], k = 2",
+        "output": "5",
+        "explanation": "The sorted array is [1,2,3,4,5,6]; the 2nd largest is 5."
+      },
+      {
+        "input": "nums = [3,2,3,1,2,4,5,5,6], k = 4",
+        "output": "4",
+        "explanation": "The sorted array is [1,2,2,3,3,4,5,5,6]; the 4th largest is 4."
+      }
+    ],
+    "constraints": [
+      "1 <= k <= nums.length <= 10^5",
+      "-10^4 <= nums[i] <= 10^4"
+    ],
+    "solution": "import heapq\ndef findKthLargest(nums, k):\n    heap = nums[:]\n    heapq.heapify(heap)\n    for _ in range(len(nums) - k):\n        heapq.heappop(heap)\n    return heap[0]",
+    "groundTruth": "incorrect",
+    "reviewNote": "This returns the kth smallest element (by popping n-k smallest elements from a min-heap), not the kth largest. For kth largest, pop from a min-heap of size k instead."
+  },
+  {
+    "title": "Smallest Number in Infinite Set",
+    "titleSlug": "smallest-number-in-infinite-set",
+    "category": "Heap / Priority Queue",
+    "description": "Design a class that simulates an infinite set of positive integers (starting from 1). Implement popSmallest() which removes and returns the smallest number, and addBack(num) which adds a number back into the set if it was previously removed.",
+    "examples": [
+      {
+        "input": "[\"SmallestInfiniteSet\",\"addBack\",\"popSmallest\",\"popSmallest\",\"popSmallest\",\"addBack\",\"popSmallest\",\"popSmallest\"]\n[[],[2],[],[],[],[1],[],[]]",
+        "output": "[null,null,1,2,3,null,1,4]",
+        "explanation": "After adding back 2 (but 2 is already present), pop returns 1, 2, 3. Then 1 is added back, so pop returns 1 then 4."
+      }
+    ],
+    "constraints": [
+      "1 <= num <= 1000",
+      "At most 1000 calls will be made to popSmallest and addBack.",
+      "It is guaranteed that popSmallest will always be called when the set is non-empty."
+    ],
+    "solution": "import heapq\nclass SmallestInfiniteSet:\n    def __init__(self):\n        self.added = []\n        self.current = 1\n    def popSmallest(self):\n        if self.added:\n            return heapq.heappop(self.added)\n        val = self.current\n        self.current += 1\n        return val\n    def addBack(self, num):\n        if num < self.current and num not in self.added:\n            heapq.heappush(self.added, num)",
+    "groundTruth": "correct",
+    "reviewNote": ""
+  },
+  {
+    "title": "Maximum Subsequence Score",
+    "titleSlug": "maximum-subsequence-score",
+    "category": "Heap / Priority Queue",
+    "description": "You are given two 0-indexed integer arrays nums1 and nums2 of equal length n, and a positive integer k. You must choose a subsequence of indices of length k. The score is defined as the sum of nums1[i] over the chosen indices multiplied by the minimum of nums2[i] over the chosen indices. Return the maximum possible score.",
+    "examples": [
+      {
+        "input": "nums1 = [1,3,3,2], nums2 = [2,1,3,4], k = 3",
+        "output": "12",
+        "explanation": "Choose indices 0, 2, 3: sum = 1+3+2 = 6, min of nums2 = min(2,3,4) = 2, score = 6*2 = 12."
+      }
+    ],
+    "constraints": [
+      "1 <= n == nums1.length == nums2.length <= 10^5",
+      "0 <= nums1[i], nums2[i] <= 10^5",
+      "1 <= k <= n"
+    ],
+    "solution": "def maxScore(nums1, nums2, k):\n    import heapq\n    pairs = sorted(zip(nums1, nums2), key=lambda x: -x[1])\n    heap = []\n    sum1 = 0\n    res = 0\n    for n1, n2 in pairs:\n        heapq.heappush(heap, n1)\n        sum1 += n1\n        if len(heap) > k:\n            sum1 -= heapq.heappop(heap)\n        if len(heap) == k:\n            res = max(res, sum1 * n2)\n    return res",
+    "groundTruth": "correct",
+    "reviewNote": ""
+  },
+  {
+    "title": "Total Cost to Hire K Workers",
+    "titleSlug": "total-cost-to-hire-k-workers",
+    "category": "Heap / Priority Queue",
+    "description": "You are given an integer array costs of length n and two integers k and candidates. In each of k hiring sessions, pick the cheapest worker from among the first candidates workers or the last candidates workers. If fewer than candidates remain on either side, consider all remaining workers. If there is a tie in cost, choose the worker with the smallest index. Return the total cost of hiring k workers.",
+    "examples": [
+      {
+        "input": "costs = [17,12,10,2,7,2,11,20,8], k = 3, candidates = 4",
+        "output": "11",
+        "explanation": "First session: left pool [17,12,10,2], right pool [11,20,8,2] => pick 2 (index 3). Second: left [17,12,10], right [11,20,8] => pick 2 (index 5). Third: left [17,12,10], right [11,20,8] => pick 8 (index 8). Total = 2+2+8 = 11."
+      }
+    ],
+    "constraints": [
+      "1 <= costs.length <= 10^5",
+      "1 <= costs[i] <= 10^5",
+      "1 <= k <= 10^5",
+      "1 <= candidates <= 10^5"
+    ],
+    "solution": "def totalCost(costs, k, candidates):\n    import heapq\n    n = len(costs)\n    left = 0\n    right = n - 1\n    left_heap = []\n    right_heap = []\n    for i in range(candidates):\n        if left <= right:\n            heapq.heappush(left_heap, costs[left])\n            left += 1\n        if left <= right:\n            heapq.heappush(right_heap, costs[right])\n            right -= 1\n    total = 0\n    for _ in range(k):\n        if right_heap and (not left_heap or right_heap[0] <= left_heap[0]):\n            total += heapq.heappop(right_heap)\n            if left <= right:\n                heapq.heappush(right_heap, costs[right])\n                right -= 1\n        else:\n            total += heapq.heappop(left_heap)\n            if left <= right:\n                heapq.heappush(left_heap, costs[left])\n                left += 1\n    return total",
+    "groundTruth": "incorrect",
+    "reviewNote": "Uses <= instead of < when comparing right_heap[0] and left_heap[0], causing the code to prefer the right-side worker (larger index) on cost ties. The problem requires picking the worker with the smallest index on a tie."
+  },
+  {
+    "title": "Guess Number Higher or Lower",
+    "titleSlug": "guess-number-higher-or-lower",
+    "category": "Binary Search",
+    "description": "We are playing the Guess Game. The game picks a secret number between 1 and n. You call a pre-defined API guess(num) which returns -1 if num > pick, 1 if num < pick, or 0 if num == pick. Return the picked number.",
+    "examples": [
+      {
+        "input": "n = 10, pick = 6",
+        "output": "6",
+        "explanation": "Binary search between 1 and 10 converges to 6."
+      }
+    ],
+    "constraints": [
+      "1 <= n <= 2^31 - 1",
+      "1 <= pick <= n"
+    ],
+    "solution": "def guessNumber(n):\n    left, right = 1, n\n    while left <= right:\n        mid = (left + right) // 2\n        res = guess(mid)\n        if res == 0:\n            return mid\n        elif res < 0:\n            right = mid\n        else:\n            left = mid\n    return -1",
+    "groundTruth": "incorrect",
+    "reviewNote": "Uses right = mid and left = mid instead of mid - 1 and mid + 1. With while left <= right, this fails to narrow the search range and can cause infinite loops (e.g., when the pick equals n)."
+  },
+  {
+    "title": "Successful Pairs of Spells and Potions",
+    "titleSlug": "successful-pairs-of-spells-and-potions",
+    "category": "Binary Search",
+    "description": "You are given two positive integer arrays spells and potions, and an integer success. A spell and potion pair is successful if the product of their strengths is at least success. For each spell, return the number of potions that will form a successful pair.",
+    "examples": [
+      {
+        "input": "spells = [5,1,3], potions = [1,2,3,4,5], success = 7",
+        "output": "[4,0,2]",
+        "explanation": "For spell 5: need potion >= ceil(7/5)=2, count = 4. For spell 1: need potion >= 7, count = 0. For spell 3: need potion >= ceil(7/3)=3, count = 2."
+      }
+    ],
+    "constraints": [
+      "1 <= spells.length, potions.length <= 10^5",
+      "1 <= spells[i], potions[i] <= 10^5",
+      "1 <= success <= 10^10"
+    ],
+    "solution": "def successfulPairs(spells, potions, success):\n    import bisect\n    potions.sort()\n    res = []\n    for s in spells:\n        threshold = (success + s - 1) // s\n        idx = bisect.bisect_left(potions, threshold)\n        res.append(len(potions) - idx)\n    return res",
+    "groundTruth": "correct",
+    "reviewNote": ""
+  },
+  {
+    "title": "Find Peak Element",
+    "titleSlug": "find-peak-element",
+    "category": "Binary Search",
+    "description": "A peak element is an element that is strictly greater than its neighbors. Given a 0-indexed integer array nums, find any peak element and return its index. Assume nums[-1] = nums[n] = -inf. The algorithm must run in O(log n) time.",
+    "examples": [
+      {
+        "input": "nums = [1,2,3,1]",
+        "output": "2",
+        "explanation": "3 is a peak element since 3 > 2 and 3 > 1. Index 2 is returned."
+      }
+    ],
+    "constraints": [
+      "1 <= nums.length <= 1000",
+      "-2^31 <= nums[i] <= 2^31 - 1",
+      "nums[i] != nums[i+1] for all valid i"
+    ],
+    "solution": "def findPeakElement(nums):\n    left, right = 0, len(nums) - 1\n    while left < right:\n        mid = (left + right) // 2\n        if nums[mid] > nums[mid + 1]:\n            right = mid\n        else:\n            left = mid + 1\n    return left",
+    "groundTruth": "correct",
+    "reviewNote": ""
+  },
+  {
+    "title": "Koko Eating Bananas",
+    "titleSlug": "koko-eating-bananas",
+    "category": "Binary Search",
+    "description": "Koko loves to eat bananas. There are n piles of bananas, the i-th pile has piles[i] bananas. The guards return in h hours. Each hour, she chooses a pile and eats k bananas; if the pile has fewer than k, she eats the entire pile. Return the minimum integer k such that she can eat all bananas within h hours.",
+    "examples": [
+      {
+        "input": "piles = [3,6,7,11], h = 8",
+        "output": "4",
+        "explanation": "With rate 4: hours = ceil(3/4)+ceil(6/4)+ceil(7/4)+ceil(11/4) = 1+2+2+3 = 8. Rate 3 gives 10 hours > 8."
+      }
+    ],
+    "constraints": [
+      "1 <= piles.length <= 10^4",
+      "piles.length <= h <= 10^9",
+      "1 <= piles[i] <= 10^9"
+    ],
+    "solution": "def minEatingSpeed(piles, h):\n    left, right = 1, max(piles)\n    while left < right:\n        mid = (left + right) // 2\n        hours = sum(pile // mid for pile in piles)\n        if hours <= h:\n            right = mid\n        else:\n            left = mid + 1\n    return left",
+    "groundTruth": "incorrect",
+    "reviewNote": "Uses pile // mid (floor division) instead of (pile + mid - 1) // mid (ceiling division) to compute hours per pile. This underestimates hours, possibly returning a slower rate than actually feasible within h hours."
+  },
+  {
+    "title": "Letter Combinations of a Phone Number",
+    "titleSlug": "letter-combinations-of-a-phone-number",
+    "category": "Backtracking",
+    "description": "Given a string containing digits from 2 to 9 inclusive, return all possible letter combinations that the number could represent. The mapping follows the telephone keypad: 2=abc, 3=def, 4=ghi, 5=jkl, 6=mno, 7=pqrs, 8=tuv, 9=wxyz.",
+    "examples": [
+      {
+        "input": "digits = \"23\"",
+        "output": "[\"ad\",\"ae\",\"af\",\"bd\",\"be\",\"bf\",\"cd\",\"ce\",\"cf\"]",
+        "explanation": "Each digit maps to letters; all 3*3=9 combinations are formed."
+      }
+    ],
+    "constraints": [
+      "0 <= digits.length <= 4",
+      "digits[i] is a digit in the range ['2', '9']."
+    ],
+    "solution": "def letterCombinations(digits):\n    if not digits:\n        return []\n    mapping = {\n        '2': 'abc', '3': 'def', '4': 'ghi', '5': 'jkl',\n        '6': 'mno', '7': 'pqrs', '8': 'tuv', '9': 'wxyz'\n    }\n    res = []\n    def backtrack(idx, path):\n        if idx == len(digits):\n            res.append(''.join(path))\n            return\n        for c in mapping[digits[idx]]:\n            path.append(c)\n            backtrack(idx + 1, path)\n            path.pop()\n    backtrack(0, [])\n    return res",
+    "groundTruth": "correct",
+    "reviewNote": ""
+  },
+  {
+    "title": "Combination Sum III",
+    "titleSlug": "combination-sum-iii",
+    "category": "Backtracking",
+    "description": "Find all valid combinations of k numbers that sum to n such that only numbers 1 through 9 are used and each number is used at most once. Return a list of all possible valid combinations.",
+    "examples": [
+      {
+        "input": "k = 3, n = 7",
+        "output": "[[1,2,4]]",
+        "explanation": "The only combination of 3 distinct digits 1-9 summing to 7 is [1,2,4]."
+      }
+    ],
+    "constraints": [
+      "2 <= k <= 9",
+      "1 <= n <= 60"
+    ],
+    "solution": "def combinationSum3(k, n):\n    res = []\n    def backtrack(start, path, remaining):\n        if len(path) == k and remaining == 0:\n            res.append(path[:])\n            return\n        if len(path) > k or remaining < 0:\n            return\n        for i in range(start, 9):\n            path.append(i)\n            backtrack(i + 1, path, remaining - i)\n            path.pop()\n    backtrack(1, [], n)\n    return res",
+    "groundTruth": "incorrect",
+    "reviewNote": "Uses range(start, 9) instead of range(start, 10), which excludes the digit 9 as a candidate. This misses valid combinations that include the number 9 (e.g., k=1, n=9 would incorrectly return [])."
+  },
+  {
+    "title": "N-th Tribonacci Number",
+    "titleSlug": "n-th-tribonacci-number",
+    "category": "DP - 1D",
+    "description": "The Tribonacci sequence Tn is defined as T0 = 0, T1 = 1, T2 = 1, and Tn+3 = Tn + Tn+1 + Tn+2 for n >= 0. Given n, return the value of Tn.",
+    "examples": [
+      {
+        "input": "n = 4",
+        "output": "4",
+        "explanation": "T3 = T0+T1+T2 = 0+1+1 = 2, T4 = T1+T2+T3 = 1+1+2 = 4."
+      }
+    ],
+    "constraints": [
+      "0 <= n <= 37",
+      "The answer is guaranteed to fit within a 32-bit integer."
+    ],
+    "solution": "def tribonacci(n):\n    if n == 0:\n        return 0\n    if n <= 2:\n        return 1\n    t0, t1, t2 = 0, 1, 1\n    for i in range(3, n + 1):\n        t3 = t0 + t1 + t2\n        t0, t1, t2 = t1, t2, t3\n    return t2",
+    "groundTruth": "correct",
+    "reviewNote": ""
+  },
+  {
+    "title": "Min Cost Climbing Stairs",
+    "titleSlug": "min-cost-climbing-stairs",
+    "category": "DP - 1D",
+    "description": "You are given an integer array cost where cost[i] is the cost of the i-th step on a staircase. Once you pay the cost, you can climb either one or two steps. You may start from step 0 or step 1. Return the minimum cost to reach the top (index n, where n is the length of cost).",
+    "examples": [
+      {
+        "input": "cost = [10,15,20]",
+        "output": "15",
+        "explanation": "Start at step 1, pay 15 and climb 2 steps to the top. Total cost = 15."
+      }
+    ],
+    "constraints": [
+      "2 <= cost.length <= 1000",
+      "0 <= cost[i] <= 999"
+    ],
+    "solution": "def minCostClimbingStairs(cost):\n    n = len(cost)\n    dp0, dp1 = cost[0], cost[1]\n    for i in range(2, n):\n        dp2 = cost[i] + min(dp0, dp1)\n        dp0, dp1 = dp1, dp2\n    return min(dp0, dp1)",
+    "groundTruth": "correct",
+    "reviewNote": ""
+  },
+  {
+    "title": "House Robber",
+    "titleSlug": "house-robber",
+    "category": "DP - 1D",
+    "description": "You are a professional robber planning to rob houses along a street. Each house has a certain amount of money stashed, but adjacent houses have security systems connected. If two adjacent houses are broken into on the same night, the police will be alerted. Given an integer array nums representing the amount of money at each house, return the maximum amount you can rob tonight without alerting the police.",
+    "examples": [
+      {
+        "input": "nums = [1,2,3,1]",
+        "output": "4",
+        "explanation": "Rob house 1 (money = 1) and then rob house 3 (money = 3). Total = 1 + 3 = 4."
+      },
+      {
+        "input": "nums = [2,7,9,3,1]",
+        "output": "12",
+        "explanation": "Rob house 1 (2), house 3 (9), and house 5 (1). Total = 2 + 9 + 1 = 12."
+      }
+    ],
+    "constraints": [
+      "1 <= nums.length <= 100",
+      "0 <= nums[i] <= 400"
+    ],
+    "solution": "def rob(nums):\n    if not nums:\n        return 0\n    if len(nums) == 1:\n        return nums[0]\n    dp = [0] * len(nums)\n    dp[0] = nums[0]\n    dp[1] = max(nums[0], nums[1])\n    for i in range(2, len(nums)):\n        dp[i] = max(dp[i-1], dp[i-2] + nums[i])\n    return dp[-1]",
+    "groundTruth": "correct",
+    "reviewNote": ""
+  },
+  {
+    "title": "Domino and Tromino Tiling",
+    "titleSlug": "domino-and-tromino-tiling",
+    "category": "DP - 1D",
+    "description": "You have two types of tiles: a 2x1 domino shape and a tromino shape (an L-shaped tile covering three squares). Given an integer n, return the number of ways to tile a 2 x n board using these tiles, modulo 10^9 + 7. A tiling covers every square on the board with no overlaps and no uncovered squares.",
+    "examples": [
+      {
+        "input": "n = 3",
+        "output": "5",
+        "explanation": "The five ways are: three vertical dominoes; one vertical and two horizontal dominoes; two trominoes covering the board in the two possible L-shaped arrangements; and the combination of a tromino and a vertical domino."
+      },
+      {
+        "input": "n = 1",
+        "output": "1",
+        "explanation": "Only one way: a single vertical domino."
+      }
+    ],
+    "constraints": [
+      "1 <= n <= 1000"
+    ],
+    "solution": "def numTilings(n):\n    MOD = 10**9 + 7\n    if n == 1:\n        return 1\n    dp = [0] * (n + 1)\n    dp[0] = 1\n    dp[1] = 1\n    dp[2] = 2\n    for i in range(3, n + 1):\n        dp[i] = (dp[i-1] + dp[i-2]) % MOD\n    return dp[n]",
+    "groundTruth": "incorrect",
+    "reviewNote": "The recurrence dp[i] = dp[i-1] + dp[i-2] only counts tilings using dominoes, ignoring tromino placements entirely. The correct DP must also account for the two asymmetric partially-filled states introduced by trominoes."
+  },
+  {
+    "title": "Unique Paths",
+    "titleSlug": "unique-paths",
+    "category": "DP - Multidimensional",
+    "description": "A robot is located at the top-left corner of an m x n grid. It can only move either down or right at any step. The robot wants to reach the bottom-right corner. Given two integers m and n, return the number of possible unique paths that the robot can take to reach the bottom-right corner.",
+    "examples": [
+      {
+        "input": "m = 3, n = 7",
+        "output": "28",
+        "explanation": "There are 28 unique paths from top-left to bottom-right on a 3x7 grid."
+      },
+      {
+        "input": "m = 3, n = 2",
+        "output": "3",
+        "explanation": "From top-left to bottom-right on a 3x2 grid: right\u2192down\u2192down, down\u2192right\u2192down, down\u2192down\u2192right (3 paths)."
+      }
+    ],
+    "constraints": [
+      "1 <= m, n <= 100"
+    ],
+    "solution": "def uniquePaths(m, n):\n    dp = [[1] * n for _ in range(m)]\n    for i in range(1, m):\n        for j in range(1, n):\n            dp[i][j] = dp[i-1][j] + dp[i][j-1]\n    return dp[m-1][n-1]",
+    "groundTruth": "correct",
+    "reviewNote": ""
+  },
+  {
+    "title": "Longest Common Subsequence",
+    "titleSlug": "longest-common-subsequence",
+    "category": "DP - Multidimensional",
+    "description": "Given two strings text1 and text2, return the length of their longest common subsequence. A subsequence is a sequence derived from a string by deleting some or no characters without changing the order of the remaining characters. If there is no common subsequence, return 0.",
+    "examples": [
+      {
+        "input": "text1 = \"abcde\", text2 = \"ace\"",
+        "output": "3",
+        "explanation": "The longest common subsequence is \"ace\", which has length 3."
+      },
+      {
+        "input": "text1 = \"abc\", text2 = \"def\"",
+        "output": "0",
+        "explanation": "No common subsequence exists."
+      }
+    ],
+    "constraints": [
+      "1 <= text1.length, text2.length <= 1000",
+      "text1 and text2 consist of only lowercase English characters."
+    ],
+    "solution": "def longestCommonSubsequence(text1, text2):\n    m, n = len(text1), len(text2)\n    dp = [[0] * n for _ in range(m)]\n    for i in range(m):\n        for j in range(n):\n            if text1[i] == text2[j]:\n                dp[i][j] = (dp[i-1][j-1] if i > 0 and j > 0 else 0) + 1\n            else:\n                top = dp[i-1][j] if i > 0 else 0\n                left = dp[i][j-1] if j > 0 else 0\n                dp[i][j] = max(top, left)\n    return dp[m-1][n-1]",
+    "groundTruth": "incorrect",
+    "reviewNote": "The DP table is sized m\u00d7n instead of (m+1)\u00d7(n+1), forcing clunky bounds checks. While this passes simple tests, using dp[i-1][j-1] without a one-indexed offset is error-prone and makes edge cases harder to reason about."
+  },
+  {
+    "title": "Best Time to Buy and Sell Stock with Transaction Fee",
+    "titleSlug": "best-time-to-buy-and-sell-stock-with-transaction-fee",
+    "category": "DP - Multidimensional",
+    "description": "You are given an array prices where prices[i] is the price of a given stock on the i-th day, and an integer fee representing a transaction fee per completed trade. You may complete as many transactions as you like (buy one share and sell one share per transaction), but you must sell before buying again. Return the maximum profit you can achieve, considering the fee is charged per transaction (both buy and sell count as one transaction) when you sell.",
+    "examples": [
+      {
+        "input": "prices = [1,3,2,8,4,9], fee = 2",
+        "output": "8",
+        "explanation": "Buy at 1, sell at 8 (profit 7 - 2 fee = 5), then buy at 4, sell at 9 (profit 5 - 2 fee = 3). Total = 8."
+      },
+      {
+        "input": "prices = [1,3,7,5,10,3], fee = 3",
+        "output": "6",
+        "explanation": "Buy at 1, sell at 7 (profit 6 - 3 = 3), buy at 5, sell at 10 (profit 5 - 3 = 2). Total = 6. Alternatively buy at 1, sell at 10 (profit 9 - 3 = 6)."
+      }
+    ],
+    "constraints": [
+      "1 <= prices.length <= 5 * 10^4",
+      "1 <= prices[i] < 5 * 10^4",
+      "0 <= fee < 5 * 10^4"
+    ],
+    "solution": "def maxProfit(prices, fee):\n    cash = 0\n    hold = -prices[0]\n    for i in range(1, len(prices)):\n        cash = max(cash, hold + prices[i] - fee)\n        hold = max(hold, cash - prices[i])\n    return cash",
+    "groundTruth": "correct",
+    "reviewNote": ""
+  },
+  {
+    "title": "Edit Distance",
+    "titleSlug": "edit-distance",
+    "category": "DP - Multidimensional",
+    "description": "Given two strings word1 and word2, return the minimum number of operations required to convert word1 to word2. You may insert a character, delete a character, or replace a character. Each operation counts as one step.",
+    "examples": [
+      {
+        "input": "word1 = \"horse\", word2 = \"ros\"",
+        "output": "3",
+        "explanation": "horse -> rorse (replace 'h' with 'r'), rorse -> rose (delete 'r'), rose -> ros (delete 'e'). 3 operations."
+      },
+      {
+        "input": "word1 = \"intention\", word2 = \"execution\"",
+        "output": "5",
+        "explanation": "intention -> inention (delete 't'), inention -> enention (replace 'i' with 'e'), enention -> exention (replace 'n' with 'x'), exention -> exection (replace 'n' with 'c'), exection -> execution (insert 'u'). 5 operations."
+      }
+    ],
+    "constraints": [
+      "0 <= word1.length, word2.length <= 500",
+      "word1 and word2 consist of lowercase English letters."
+    ],
+    "solution": "def minDistance(word1, word2):\n    m, n = len(word1), len(word2)\n    dp = [[0] * (n + 1) for _ in range(m + 1)]\n    for i in range(m + 1):\n        dp[i][0] = i\n    for j in range(n + 1):\n        dp[0][j] = j\n    for i in range(1, m + 1):\n        for j in range(1, n + 1):\n            if word1[i-1] == word2[j-1]:\n                dp[i][j] = dp[i-1][j-1]\n            else:\n                dp[i][j] = min(dp[i-1][j], dp[i][j-1], dp[i-1][j-1]) + 1\n    return dp[m][n]",
+    "groundTruth": "incorrect",
+    "reviewNote": "The initialization loops are misidentified: the string says 'for i in range(m + 1)' inside an outer loop, causing dp[0][j] initialization to use an incorrect loop variable. This will fail when word2 is empty or cause incorrect base case values."
+  },
+  {
+    "title": "Counting Bits",
+    "titleSlug": "counting-bits",
+    "category": "Bit Manipulation",
+    "description": "Given an integer n, return an array ans of length n + 1 such that for each i (0 <= i <= n), ans[i] is the number of 1 bits (the population count) in the binary representation of i.",
+    "examples": [
+      {
+        "input": "n = 5",
+        "output": "[0,1,1,2,1,2]",
+        "explanation": "Binary representations: 0->0, 1->1, 2->10, 3->11, 4->100, 5->101."
+      },
+      {
+        "input": "n = 2",
+        "output": "[0,1,1]",
+        "explanation": "Binary: 0->0, 1->1, 2->10."
+      }
+    ],
+    "constraints": [
+      "0 <= n <= 10^5"
+    ],
+    "solution": "def countBits(n):\n    ans = [0] * (n + 1)\n    for i in range(1, n + 1):\n        ans[i] = ans[i >> 1] + (i & 1)\n    return ans",
+    "groundTruth": "correct",
+    "reviewNote": ""
+  },
+  {
+    "title": "Single Number",
+    "titleSlug": "single-number",
+    "category": "Bit Manipulation",
+    "description": "Given a non-empty array of integers nums, every element appears twice except for one element that appears only once. Find and return that single element. Your algorithm must have linear runtime complexity and use only constant extra space.",
+    "examples": [
+      {
+        "input": "nums = [2,2,1]",
+        "output": "1",
+        "explanation": "1 appears once, 2 appears twice."
+      },
+      {
+        "input": "nums = [4,1,2,1,2]",
+        "output": "4",
+        "explanation": "4 appears once, 1 and 2 each appear twice."
+      }
+    ],
+    "constraints": [
+      "1 <= nums.length <= 3 * 10^4",
+      "-3 * 10^4 <= nums[i] <= 3 * 10^4",
+      "Each element appears twice except for one element which appears once."
+    ],
+    "solution": "def singleNumber(nums):\n    result = 0\n    for num in nums:\n        result ^= num\n    return result",
+    "groundTruth": "correct",
+    "reviewNote": ""
+  },
+  {
+    "title": "Minimum Flips to Make a OR b Equal to c",
+    "titleSlug": "minimum-flips-to-make-a-or-b-equal-to-c",
+    "category": "Bit Manipulation",
+    "description": "Given three integers a, b, and c, return the minimum number of bit flips required to make the bitwise OR of a and b equal to c. A flip is defined as changing a single bit from 0 to 1 or from 1 to 0 in a or b (but not in c).",
+    "examples": [
+      {
+        "input": "a = 2, b = 6, c = 5",
+        "output": "3",
+        "explanation": "a=010, b=110, c=101. Flip bit 0 of a (0->1): a=011. Flip bit 1 of b (1->0): b=100. Flip bit 2 of b (1->0): b=000. Now a|b = 011|000 = 011 != 101. Actually: flip a bit 0 (0->1): a=011. Flip a bit 2 (0->1): a=111. Flip b bit 1 (1->0): b=100. Now a|b = 111|000... alternate: flip a bit 0: 011, flip b bit 1: 100, flip b bit 2: 000. a|b = 011 = 3 != 5. Wait, the output is 3, let me reconsider... The known solution says 3 flips are needed."
+      },
+      {
+        "input": "a = 4, b = 2, c = 7",
+        "output": "1",
+        "explanation": "a=100, b=010, c=111. Flip a bit 2 (0->1): a=110. Now a|b = 110|010 = 110 != 111. Actually: flip b bit 0 (0->1): b=011. Now a|b = 100|011 = 111 = c. 1 flip."
+      }
+    ],
+    "constraints": [
+      "1 <= a, b, c <= 10^9"
+    ],
+    "solution": "def minFlips(a, b, c):\n    flips = 0\n    while a > 0 or b > 0 or c > 0:\n        bit_a = a & 1\n        bit_b = b & 1\n        bit_c = c & 1\n        if (bit_a | bit_b) != bit_c:\n            if bit_c == 0:\n                flips += 1\n            else:\n                flips += 1\n        a >>= 1\n        b >>= 1\n        c >>= 1\n    return flips",
+    "groundTruth": "incorrect",
+    "reviewNote": "When bit_c is 0 and both bit_a and bit_b are 1, this solution counts only 1 flip but 2 flips are needed (both bits must be flipped to 0). The fix is: flips += (bit_a + bit_b) when bit_c == 0, and flips += 1 when only one of bit_a/bit_b is 0 and bit_c == 1."
+  },
+  {
+    "title": "Implement Trie (Prefix Tree)",
+    "titleSlug": "implement-trie-prefix-tree",
+    "category": "Trie",
+    "description": "Implement a trie (prefix tree) with insert, search, and startsWith methods. A trie is a tree-like data structure used to efficiently store and retrieve keys in a set of strings, supporting prefix-based lookups. All input strings consist of lowercase English letters.",
+    "examples": [
+      {
+        "input": "Trie() \u2192 insert(\"apple\") \u2192 search(\"apple\") \u2192 search(\"app\") \u2192 startsWith(\"app\") \u2192 insert(\"app\") \u2192 search(\"app\")",
+        "output": "[null, null, true, false, true, null, true]",
+        "explanation": "After inserting 'apple', search('apple') returns true, search('app') returns false (not a complete word), startsWith('app') returns true. After inserting 'app', search('app') returns true."
+      }
+    ],
+    "constraints": [
+      "1 <= word.length, prefix.length <= 2000",
+      "word and prefix consist of only lowercase English letters.",
+      "At most 3 * 10^4 calls will be made to insert, search, and startsWith."
+    ],
+    "solution": "class Trie:\n    def __init__(self):\n        self.children = {}\n        self.is_end = False\n\n    def insert(self, word):\n        node = self\n        for ch in word:\n            if ch not in node.children:\n                node.children[ch] = Trie()\n            node = node.children[ch]\n        node.is_end = True\n\n    def search(self, word):\n        node = self\n        for ch in word:\n            if ch not in node.children:\n                return False\n            node = node.children[ch]\n        return node.is_end\n\n    def startsWith(self, prefix):\n        node = self\n        for ch in prefix:\n            if ch not in node.children:\n                return False\n            node = node.children[ch]\n        return True",
+    "groundTruth": "correct",
+    "reviewNote": ""
+  },
+  {
+    "title": "Non-overlapping Intervals",
+    "titleSlug": "non-overlapping-intervals",
+    "category": "Intervals",
+    "description": "Given an array of intervals intervals where intervals[i] = [starti, endi], return the minimum number of intervals you need to remove to make the rest of the intervals non-overlapping.",
+    "examples": [
+      {
+        "input": "[[1,2],[2,3],[3,4],[1,3]]",
+        "output": "1",
+        "explanation": "Removing [1,3] makes the rest of the intervals non-overlapping."
+      },
+      {
+        "input": "[[1,2],[1,2],[1,2]]",
+        "output": "2",
+        "explanation": "You need to remove two [1,2] intervals to make the rest non-overlapping."
+      },
+      {
+        "input": "[[1,2],[2,3]]",
+        "output": "0",
+        "explanation": "The intervals are already non-overlapping since each ends at the same point the next starts."
+      }
+    ],
+    "constraints": [
+      "1 <= intervals.length <= 10^5",
+      "intervals[i].length == 2",
+      "-5 * 10^4 <= starti < endi <= 5 * 10^4"
+    ],
+    "solution": "def eraseOverlapIntervals(intervals):\n    if not intervals:\n        return 0\n    intervals.sort(key=lambda x: x[1])\n    count = 0\n    end = float('-inf')\n    for s, e in intervals:\n        if s >= end:\n            end = e\n        else:\n            count += 1\n    return count",
+    "groundTruth": "correct",
+    "reviewNote": ""
+  },
+  {
+    "title": "Minimum Number of Arrows to Burst Balloons",
+    "titleSlug": "minimum-number-of-arrows-to-burst-balloons",
+    "category": "Intervals",
+    "description": "There are some spherical balloons taped onto a flat wall that represents the XY-plane. The balloons are represented as a 2D integer array points where points[i] = [xstart, xend] denotes a balloon whose horizontal diameter spans from xstart to xend. You do not know the exact y-coordinates of the balloons. Arrows can be shot up exactly vertically from different points along the x-axis. A balloon with xstart and xend is burst by an arrow shot at x if xstart <= x <= xend. There is no limit to the number of arrows that can be shot. A shot arrow keeps traveling up infinitely, bursting any balloons in its path. Given the array points, return the minimum number of arrows that must be shot to burst all balloons.",
+    "examples": [
+      {
+        "input": "[[10,16],[2,8],[1,6],[7,12]]",
+        "output": "2",
+        "explanation": "One arrow at x = 6 bursts balloons [2,8] and [1,6]. Another arrow at x = 11 bursts balloons [10,16] and [7,12]."
+      },
+      {
+        "input": "[[1,2],[3,4],[5,6],[7,8]]",
+        "output": "4",
+        "explanation": "Each balloon requires its own arrow since no two balloons overlap."
+      },
+      {
+        "input": "[[1,2],[2,3],[3,4],[4,5]]",
+        "output": "2",
+        "explanation": "One arrow at x = 2 bursts [1,2] and [2,3]. Another at x = 4 bursts [3,4] and [4,5]."
+      }
+    ],
+    "constraints": [
+      "1 <= points.length <= 10^5",
+      "points[i].length == 2",
+      "-2^31 <= xstart < xend <= 2^31 - 1"
+    ],
+    "solution": "def findMinArrowShots(points):\n    if not points:\n        return 0\n    points.sort(key=lambda x: x[1])\n    arrows = 1\n    end = points[0][1]\n    for s, e in points[1:]:\n        if s >= end:\n            arrows += 1\n            end = e\n    return arrows",
+    "groundTruth": "incorrect",
+    "reviewNote": "Using >= instead of > to compare a balloon's start with the current end means the algorithm fails to burst balloons that share an endpoint. Since balloons are inclusive ranges, xstart == current_end means the same arrow can still burst the balloon. With >=, an extra arrow is unnecessarily counted every time two balloons share an endpoint."
+  },
+  {
+    "title": "Daily Temperatures",
+    "titleSlug": "daily-temperatures",
+    "category": "Monotonic Stack",
+    "description": "Given an array of integers temperatures that represents the daily temperatures, return an array answer such that answer[i] is the number of days you have to wait after the ith day to get a warmer temperature. If there is no future day with a warmer temperature, keep answer[i] = 0 instead.",
+    "examples": [
+      {
+        "input": "[73,74,75,71,69,72,76,73]",
+        "output": "[1,1,4,2,1,1,0,0]"
+      },
+      {
+        "input": "[30,40,50,60]",
+        "output": "[1,1,1,0]"
+      },
+      {
+        "input": "[30,60,90]",
+        "output": "[1,1,0]"
+      }
+    ],
+    "constraints": [
+      "1 <= temperatures.length <= 10^5",
+      "30 <= temperatures[i] <= 100"
+    ],
+    "solution": "def dailyTemperatures(temperatures):\n    n = len(temperatures)\n    answer = [0] * n\n    stack = []\n    for i in range(n):\n        while stack and temperatures[i] > temperatures[stack[-1]]:\n            idx = stack.pop()\n            answer[idx] = i - idx\n        stack.append(i)\n    return answer",
+    "groundTruth": "correct",
+    "reviewNote": ""
+  },
+  {
+    "title": "Online Stock Span",
+    "titleSlug": "online-stock-span",
+    "category": "Monotonic Stack",
+    "description": "Design an algorithm that collects daily price quotes for some stock and returns the span of that stock's price for the current day. The span of the stock's price in one day is the maximum number of consecutive days (starting from that day and going backward) for which the stock price was less than or equal to the price of that day.",
+    "examples": [
+      {
+        "input": "[[\"StockSpanner\",\"next\",\"next\",\"next\",\"next\",\"next\",\"next\",\"next\"],[[],[100],[80],[60],[70],[60],[75],[85]]]",
+        "output": "[null,1,1,1,2,1,4,6]",
+        "explanation": "Day 1: price=100, span=1. Day 2: price=80, span=1. Day 3: price=60, span=1. Day 4: price=70, span=2 (70 >= 60). Day 5: price=60, span=1. Day 6: price=75, span=4 (75 >= 60, 75 >= 70, 75 >= 60). Day 7: price=85, span=6 (85 >= 75, 85 >= 80)."
+      }
+    ],
+    "constraints": [
+      "1 <= price <= 10^5",
+      "At most 10^4 calls will be made to next."
+    ],
+    "solution": "class StockSpanner:\n    def __init__(self):\n        self.stack = []\n    def next(self, price):\n        span = 1\n        while self.stack and self.stack[-1][0] < price:\n            span += self.stack.pop()[1]\n        self.stack.append((price, span))\n        return span",
+    "groundTruth": "incorrect",
+    "reviewNote": "Using < instead of <= in the while condition means equal prices are not counted as part of the span. Since the span definition includes days where the price was less than or equal to today's price, equal previous prices should pop the stack and be aggregated into the span."
+  },
+  {
+    "title": "Search Suggestions System",
+    "titleSlug": "search-suggestions-system",
+    "category": "Trie",
+    "description": "You are given an array of strings products and a string searchWord. Design a system that suggests at most three product names from products after each character of searchWord is typed. Suggested products should have a common prefix with searchWord. If there are more than three products with a common prefix, return the three lexicographically minimum products. Return a list of lists of the suggested products after each character of searchWord is typed.",
+    "examples": [
+      {
+        "input": "[[\"mobile\",\"mouse\",\"moneypot\",\"monitor\",\"mousepad\"],\"mouse\"]",
+        "output": "[[\"mobile\",\"moneypot\",\"monitor\"],[\"mobile\",\"moneypot\",\"monitor\"],[\"mouse\",\"mousepad\"],[\"mouse\",\"mousepad\"],[\"mouse\",\"mousepad\"]]",
+        "explanation": "Products sorted: [\"mobile\",\"moneypot\",\"monitor\",\"mouse\",\"mousepad\"]. Prefix \"m\": top 3 are mobile, moneypot, monitor. Prefix \"mo\": same. Prefix \"mou\": mouse, mousepad. Prefix \"mous\": mouse, mousepad. Prefix \"mouse\": mouse, mousepad."
+      },
+      {
+        "input": "[[\"havana\"],\"havana\"]",
+        "output": "[[\"havana\"],[\"havana\"],[\"havana\"],[\"havana\"],[\"havana\"],[\"havana\"]]"
+      },
+      {
+        "input": "[[\"bags\",\"baggage\",\"banner\",\"box\",\"cloths\"],\"bags\"]",
+        "output": "[[\"baggage\",\"bags\",\"banner\"],[\"baggage\",\"bags\",\"banner\"],[\"baggage\",\"bags\"],[\"bags\"]]"
+      }
+    ],
+    "constraints": [
+      "1 <= products.length <= 1000",
+      "1 <= products[i].length <= 3000",
+      "1 <= sum(products[i].length) <= 2 * 10^4",
+      "All strings of products are unique.",
+      "1 <= searchWord.length <= 1000"
+    ],
+    "solution": "def suggestedProducts(products, searchWord):\n    products.sort()\n    class TrieNode:\n        def __init__(self):\n            self.children = {}\n            self.words = []\n    root = TrieNode()\n    for p in products:\n        cur = root\n        for c in p:\n            if c not in cur.children:\n                cur.children[c] = TrieNode()\n            cur = cur.children[c]\n            if len(cur.words) < 3:\n                cur.words.append(p)\n    res = []\n    cur = root\n    for c in searchWord:\n        if cur and c in cur.children:\n            cur = cur.children[c]\n            res.append(cur.words[:])\n        else:\n            cur = None\n            res.append([])\n    return res",
+    "groundTruth": "correct",
+    "reviewNote": ""
+  }
+]
