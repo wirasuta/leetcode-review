@@ -13,6 +13,8 @@ function mulberry32(seed: number): () => number {
 }
 
 export function seededShuffle<T>(items: T[], seed: number, count: number): T[] {
+  if (count < 0) throw new RangeError(`count must be non-negative, got ${count}`);
+  if (count > items.length) throw new RangeError(`count (${count}) exceeds items.length (${items.length})`);
   const rng = mulberry32(seed);
   const shuffled = [...items];
   for (let i = shuffled.length - 1; i > 0; i--) {
