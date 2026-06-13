@@ -1,0 +1,83 @@
+.screen {
+}
+
+.score {
+  text-align: center;
+  margin-bottom: var(--space-3xl);
+}
+
+.scoreNumber {
+  font-size: var(--fs-2xl);
+  font-weight: 700;
+}
+
+.scoreLabel {
+  font-size: var(--fs-sm);
+  color: var(--text-secondary);
+  margin-top: var(--space-xs);
+}
+
+.breakdown {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+
+.round {
+  border: 1px solid var(--border);
+  background: var(--surface);
+  padding: var(--space-lg);
+}
+
+.roundHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--space-xs);
+}
+
+.roundTitle {
+  font-size: var(--fs-base);
+  font-weight: 600;
+}
+
+.badge {
+  font-size: var(--fs-xs);
+  font-weight: 600;
+  padding: 2px var(--space-sm);
+  border: 1px solid;
+}
+
+.badgeCorrect {
+  color: var(--green);
+  border-color: var(--green);
+}
+
+.badgeWrong {
+  color: var(--red);
+  border-color: var(--red);
+}
+
+.roundMeta {
+  font-size: var(--fs-xs);
+  color: var(--text-secondary);
+  margin-bottom: var(--space-sm);
+}
+
+.note {
+  margin-top: var(--space-md);
+  padding: var(--space-md);
+  background: var(--bg);
+  border: 1px solid var(--border);
+  font-size: var(--fs-sm);
+  line-height: 1.6;
+  color: var(--text-secondary);
+}
+
+.noteLabel {
+  font-size: var(--fs-xs);
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  color: var(--text);
+  margin-bottom: var(--space-xs);
+}
