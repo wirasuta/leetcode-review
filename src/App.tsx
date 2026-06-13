@@ -11,6 +11,14 @@ import styles from './App.module.css';
 
 const QUESTIONS_PER_DAY = 5;
 
+function getDateFromURL(): Date | null {
+  const params = new URLSearchParams(window.location.search);
+  const dateStr = params.get('date');
+  if (!dateStr) return null;
+  const date = new Date(dateStr + 'T00:00:00');
+  return isNaN(date.getTime()) ? null : date;
+}
+
 function reducer(answers: Verdict[], action: AppAction): Verdict[] {
   if (action.type === 'ANSWER') {
     return [...answers, action.verdict];
@@ -22,7 +30,8 @@ export default function App() {
   const [answers, dispatch] = useReducer(reducer, []);
 
   const todayQuestions = useMemo(() => {
-    const seed = dateToSeed(new Date());
+    const date = getDateFromURL() ?? new Date();
+    const seed = dateToSeed(date);
     return seededShuffle(problems, seed, QUESTIONS_PER_DAY);
   }, []);
 
@@ -31,6 +40,7 @@ export default function App() {
 
   const handleAnswer = (verdict: Verdict) => {
     dispatch({ type: 'ANSWER', verdict });
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   if (todayQuestions.length === 0) {
