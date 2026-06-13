@@ -1,0 +1,48 @@
+.wrapper {
+  margin-bottom: var(--space-xl);
+}
+
+.label {
+  font-size: var(--fs-xs);
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  color: var(--text-secondary);
+  margin-bottom: var(--space-xs);
+  display: block;
+}
+
+.code {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  padding: var(--space-lg);
+  font-family: var(--font-mono);
+  font-size: var(--fs-sm);
+  line-height: 1.6;
+  overflow-x: auto;
+  white-space: pre;
+}
+
+.code :global(.hljs) {
+  background: transparent;
+  color: var(--text);
+}
+
+.code :global(.hljs-keyword) {
+  color: #c792ea;
+}
+.code :global(.hljs-string) {
+  color: #c3e88d;
+}
+.code :global(.hljs-number) {
+  color: #f78c6c;
+}
+.code :global(.hljs-comment) {
+  color: #546e7a;
+  font-style: italic;
+}
+.code :global(.hljs-built_in) {
+  color: #82aaff;
+}
+.code :global(.hljs-function) .hljs-title {
+  color: #82aaff;
+}
