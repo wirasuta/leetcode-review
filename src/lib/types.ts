@@ -1,44 +1,26 @@
-export enum Difficulty {
-  Easy = 'Easy',
-  Medium = 'Medium',
-  Hard = 'Hard',
-}
+export type Verdict = 'correct' | 'incorrect';
 
-export enum ReviewStatus {
-  New = 'New',
-  Reviewing = 'Reviewing',
-  Reviewed = 'Reviewed',
-  Mastered = 'Mastered',
+export interface Example {
+  input: string;
+  output: string;
+  explanation?: string;
 }
 
 export interface Problem {
-  id: string;
   title: string;
-  slug: string;
-  difficulty: Difficulty;
-  tags: string[];
-  link?: string;
+  titleSlug: string;
+  category: string;
+  description: string;
+  examples: Example[];
+  constraints: string[];
+  solution: string;          // Python code
+  groundTruth: Verdict;
+  reviewNote: string;
 }
 
-export interface CodeSnippet {
-  language: string;
-  code: string;
+export interface AppAction {
+  type: 'ANSWER';
+  verdict: Verdict;
 }
 
-export interface Solution {
-  id: string;
-  problemId: string;
-  approach: string;
-  code: CodeSnippet;
-  notes?: string;
-  timeComplexity?: string;
-  spaceComplexity?: string;
-}
-
-export interface ReviewEntry {
-  id: string;
-  solutionId: string;
-  date: Date;
-  status: ReviewStatus;
-  notes?: string;
-}
+export type AppPhase = 'reviewing' | 'results';
