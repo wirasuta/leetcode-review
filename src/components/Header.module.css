@@ -1,0 +1,19 @@
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: var(--space-3xl);
+  padding-bottom: var(--space-md);
+  border-bottom: 1px solid var(--border);
+}
+
+.title {
+  font-size: var(--fs-base);
+  font-weight: 600;
+  letter-spacing: 0.05em;
+}
+
+.date {
+  font-size: var(--fs-sm);
+  color: var(--text-secondary);
+}

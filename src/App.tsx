@@ -1,5 +1,10 @@
-function App() {
-  return <div>LeetCode Review</div>;
-}
+import Header from './components/Header';
+import styles from './App.module.css';
 
-export default App;
+export default function App() {
+  return (
+    <div className={styles.container}>
+      <Header />
+    </div>
+  );
+}
