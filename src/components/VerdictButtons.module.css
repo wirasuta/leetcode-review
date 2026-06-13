@@ -1,0 +1,26 @@
+.buttons {
+  display: flex;
+  gap: var(--space-md);
+}
+
+.btn {
+  flex: 1;
+  background: none;
+  border: 1px solid var(--border);
+  color: var(--text);
+  font-family: var(--font-mono);
+  font-size: var(--fs-base);
+  padding: var(--space-md) var(--space-xl);
+  cursor: pointer;
+  transition: border-color 0.15s, color 0.15s;
+}
+
+.btn:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.correct:hover {
+  border-color: var(--green);
+  color: var(--green);
+}
