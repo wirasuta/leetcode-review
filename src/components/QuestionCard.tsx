@@ -24,7 +24,7 @@ export default function QuestionCard({
         Question {questionNumber} of {totalQuestions}
       </div>
 
-      <div className={styles.category}>{problem.category}</div>
+      <div className={styles.category}>{problem.category} | {problem.difficulty}</div>
       <h2 className={styles.title}>{problem.title}</h2>
 
       <p className={styles.description}>{problem.description}</p>

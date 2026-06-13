@@ -11,7 +11,7 @@ function formatDate(date: Date): string {
 export default function Header() {
   return (
     <header className={styles.header}>
-      <span className={styles.title}>LEETCODE REVIEW</span>
+      <span className={styles.title}>LeetCode Review</span>
       <span className={styles.date}>{formatDate(new Date())}</span>
     </header>
   );

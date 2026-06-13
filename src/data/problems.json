@@ -22,7 +22,8 @@
     ],
     "solution": "def mergeAlternately(word1: str, word2: str) -> str:\n    i = j = 0\n    result = []\n    while i < len(word1) and j < len(word2):\n        result.append(word1[i])\n        result.append(word2[j])\n        i += 1\n        j += 1\n    result.append(word1[i:])\n    result.append(word2[j:])\n    return ''.join(result)",
     "groundTruth": "correct",
-    "reviewNote": ""
+    "reviewNote": "",
+    "difficulty": "EASY"
   },
   {
     "title": "Greatest Common Divisor of Strings",
@@ -47,7 +48,8 @@
     ],
     "solution": "def gcdOfStrings(str1: str, str2: str) -> str:\n    if len(str1) < len(str2):\n        str1, str2 = str2, str1\n    gcd_len = 0\n    for i in range(1, len(str2) + 1):\n        if len(str2) % i == 0 and len(str1) % i == 0:\n            gcd_len = i\n    candidate = str2[:gcd_len]\n    if candidate * (len(str1) // len(candidate)) == str1 and candidate * (len(str2) // len(candidate)) == str2:\n        return candidate\n    return \"\"",
     "groundTruth": "incorrect",
-    "reviewNote": "The GCD length computed is not the actual GCD of the string lengths \u2014 it finds the largest divisor of len(str2) that also divides len(str1), but i iterates forward so gcd_len ends up being the last (largest i) matching the condition, not necessarily len(gcd(len1, len2)). However, the real bug is that it uses integer division as the GCD check instead of the mathematical GCD; for example, str1='ABAB', str2='ABABAB' would fail."
+    "reviewNote": "The GCD length computed is not the actual GCD of the string lengths \u2014 it finds the largest divisor of len(str2) that also divides len(str1), but i iterates forward so gcd_len ends up being the last (largest i) matching the condition, not necessarily len(gcd(len1, len2)). However, the real bug is that it uses integer division as the GCD check instead of the mathematical GCD; for example, str1='ABAB', str2='ABABAB' would fail.",
+    "difficulty": "EASY"
   },
   {
     "title": "Kids With the Greatest Number of Candies",
@@ -68,7 +70,8 @@
     ],
     "solution": "def kidsWithCandies(candies: list[int], extraCandies: int) -> list[bool]:\n    max_candies = max(candies)\n    return [c + extraCandies >= max_candies for c in candies]",
     "groundTruth": "correct",
-    "reviewNote": ""
+    "reviewNote": "",
+    "difficulty": "EASY"
   },
   {
     "title": "Can Place Flowers",
@@ -95,7 +98,8 @@
     ],
     "solution": "def canPlaceFlowers(flowerbed: list[int], n: int) -> bool:\n    count = 0\n    for i in range(len(flowerbed)):\n        if flowerbed[i] == 0:\n            left_empty = i == 0 or flowerbed[i-1] == 0\n            right_empty = i == len(flowerbed)-1 or flowerbed[i+1] == 0\n            if left_empty and right_empty:\n                flowerbed[i] = 1\n                count += 1\n                i += 1\n    return count >= n",
     "groundTruth": "incorrect",
-    "reviewNote": "The increment 'i += 1' inside the loop has no effect because the for loop reassigns i on each iteration. The intent was to skip the next plot after planting, but since Python's for loop overwrites i, the adjacent plot check is not skipped and may incorrectly allow or disallow placements."
+    "reviewNote": "The increment 'i += 1' inside the loop has no effect because the for loop reassigns i on each iteration. The intent was to skip the next plot after planting, but since Python's for loop overwrites i, the adjacent plot check is not skipped and may incorrectly allow or disallow placements.",
+    "difficulty": "EASY"
   },
   {
     "title": "Reverse Vowels of a String",
@@ -120,7 +124,8 @@
     ],
     "solution": "def reverseVowels(s: str) -> str:\n    vowels = set('aeiouAEIOU')\n    s = list(s)\n    l, r = 0, len(s) - 1\n    while l < r:\n        if s[l] in vowels and s[r] in vowels:\n            s[l], s[r] = s[r], s[l]\n            l += 1\n            r -= 1\n        elif s[l] in vowels:\n            r -= 1\n        elif s[r] in vowels:\n            l += 1\n        else:\n            l += 1\n            r -= 1\n    return ''.join(s)",
     "groundTruth": "correct",
-    "reviewNote": ""
+    "reviewNote": "",
+    "difficulty": "EASY"
   },
   {
     "title": "Reverse Words in a String",
@@ -146,7 +151,8 @@
     ],
     "solution": "def reverseWords(s: str) -> str:\n    words = s.split(' ')\n    i, j = 0, len(words) - 1\n    while i < j:\n        words[i], words[j] = words[j], words[i]\n        i += 1\n        j += 1\n    return ' '.join(words)",
     "groundTruth": "incorrect",
-    "reviewNote": "Splitting by a single space ' ' does not handle multiple consecutive spaces or leading/trailing spaces \u2014 empty strings are retained in the list, and the in-place reversal loop uses 'j += 1' instead of 'j -= 1', causing an infinite loop or incorrect reversal."
+    "reviewNote": "Splitting by a single space ' ' does not handle multiple consecutive spaces or leading/trailing spaces \u2014 empty strings are retained in the list, and the in-place reversal loop uses 'j += 1' instead of 'j -= 1', causing an infinite loop or incorrect reversal.",
+    "difficulty": "MEDIUM"
   },
   {
     "title": "Product of Array Except Self",
@@ -171,7 +177,8 @@
     ],
     "solution": "def productExceptSelf(nums: list[int]) -> list[int]:\n    n = len(nums)\n    answer = [1] * n\n    prefix = 1\n    for i in range(n):\n        answer[i] = prefix\n        prefix *= nums[i]\n    suffix = 1\n    for i in range(n-1, -1, -1):\n        answer[i] *= suffix\n        suffix *= nums[i]\n    return answer",
     "groundTruth": "correct",
-    "reviewNote": ""
+    "reviewNote": "",
+    "difficulty": "MEDIUM"
   },
   {
     "title": "Increasing Triplet Subsequence",
@@ -196,7 +203,8 @@
     ],
     "solution": "def increasingTriplet(nums: list[int]) -> bool:\n    first = float('inf')\n    second = float('inf')\n    for n in nums:\n        if n <= first:\n            first = n\n        elif n <= second:\n            second = n\n        else:\n            return True\n    return False",
     "groundTruth": "correct",
-    "reviewNote": ""
+    "reviewNote": "",
+    "difficulty": "MEDIUM"
   },
   {
     "title": "String Compression",
@@ -221,7 +229,8 @@
     ],
     "solution": "def compress(chars: list[str]) -> int:\n    write = 0\n    read = 0\n    while read < len(chars):\n        ch = chars[read]\n        count = 0\n        while read < len(chars) and chars[read] == ch:\n            read += 1\n            count += 1\n        chars[write] = ch\n        write += 1\n        if count > 1:\n            for digit in str(count):\n                chars[write] = digit\n                write += 1\n    return write",
     "groundTruth": "correct",
-    "reviewNote": ""
+    "reviewNote": "",
+    "difficulty": "MEDIUM"
   },
   {
     "title": "Move Zeroes",
@@ -241,7 +250,8 @@
     ],
     "solution": "def moveZeroes(nums: list[int]) -> None:\n    for i in range(len(nums)):\n        if nums[i] == 0:\n            nums.pop(i)\n            nums.append(0)",
     "groundTruth": "incorrect",
-    "reviewNote": "Modifying a list while iterating forward with pop(i) shifts indices, causing skipped elements and potentially an IndexError when i exceeds the shrinking list bounds."
+    "reviewNote": "Modifying a list while iterating forward with pop(i) shifts indices, causing skipped elements and potentially an IndexError when i exceeds the shrinking list bounds.",
+    "difficulty": "EASY"
   },
   {
     "title": "Is Subsequence",
@@ -267,7 +277,8 @@
     ],
     "solution": "def isSubsequence(s, t):\n    i = j = 0\n    while i < len(s) and j < len(t):\n        if s[i] == t[j]:\n            i += 1\n        j += 1\n    return i == len(s)",
     "groundTruth": "correct",
-    "reviewNote": ""
+    "reviewNote": "",
+    "difficulty": "EASY"
   },
   {
     "title": "Container With Most Water",
@@ -293,7 +304,8 @@
     ],
     "solution": "def maxArea(height):\n    left, right = 0, len(height) - 1\n    max_water = 0\n    while left < right:\n        area = min(height[left], height[right]) * (right - left)\n        max_water = max(max_water, area)\n        if height[left] < height[right]:\n            left += 1\n        else:\n            right -= 1\n    return max_water",
     "groundTruth": "correct",
-    "reviewNote": ""
+    "reviewNote": "",
+    "difficulty": "MEDIUM"
   },
   {
     "title": "Max Number of K-Sum Pairs",
@@ -319,7 +331,8 @@
     ],
     "solution": "def maxOperations(nums, k):\n    freq = {}\n    count = 0\n    for num in nums:\n        complement = k - num\n        if complement in freq and freq[complement] > 0:\n            count += 1\n            freq[complement] -= 1\n        else:\n            freq[num] = freq.get(num, 0) + 1\n    return count",
     "groundTruth": "incorrect",
-    "reviewNote": "This hashmap approach decrements freq[complement] but forgets to also remove the current num from the frequency map when a pair is formed, causing the same element to potentially be reused in a later pair."
+    "reviewNote": "This hashmap approach decrements freq[complement] but forgets to also remove the current num from the frequency map when a pair is formed, causing the same element to potentially be reused in a later pair.",
+    "difficulty": "MEDIUM"
   },
   {
     "title": "Maximum Average Subarray I",
@@ -345,7 +358,8 @@
     ],
     "solution": "def findMaxAverage(nums, k):\n    window_sum = sum(nums[:k])\n    max_sum = window_sum\n    for i in range(k, len(nums)):\n        window_sum += nums[i] - nums[i - k]\n        max_sum = max(max_sum, window_sum)\n    return max_sum / k",
     "groundTruth": "correct",
-    "reviewNote": ""
+    "reviewNote": "",
+    "difficulty": "EASY"
   },
   {
     "title": "Maximum Number of Vowels in a Substring of Given Length",
@@ -371,7 +385,8 @@
     ],
     "solution": "def maxVowels(s, k):\n    vowels = set('aeiou')\n    count = 0\n    for i in range(k):\n        if s[i] in vowels:\n            count += 1\n    max_count = count\n    for i in range(k, len(s)):\n        if s[i] in vowels:\n            count += 1\n        if s[i - k] in vowels:\n            count -= 1\n        if count > max_count:\n            max_count = count\n    return max_count",
     "groundTruth": "correct",
-    "reviewNote": ""
+    "reviewNote": "",
+    "difficulty": "MEDIUM"
   },
   {
     "title": "Max Consecutive Ones III",
@@ -397,7 +412,8 @@
     ],
     "solution": "def longestOnes(nums, k):\n    left = 0\n    for right in range(len(nums)):\n        if nums[right] == 0:\n            k -= 1\n        if k < 0:\n            if nums[left] == 0:\n                k += 1\n            left += 1\n    return right - left + 1",
     "groundTruth": "incorrect",
-    "reviewNote": "The variable 'right' is only defined inside the loop scope and may not be accessible after the loop depending on Python version. Initialize right = 0 before the loop."
+    "reviewNote": "The variable 'right' is only defined inside the loop scope and may not be accessible after the loop depending on Python version. Initialize right = 0 before the loop.",
+    "difficulty": "MEDIUM"
   },
   {
     "title": "Longest Subarray of 1's After Deleting One Element",
@@ -422,7 +438,8 @@
     ],
     "solution": "def longestSubarray(nums):\n    left = 0\n    zeros = 0\n    max_len = 0\n    for right in range(len(nums)):\n        if nums[right] == 0:\n            zeros += 1\n        while zeros > 1:\n            if nums[left] == 0:\n                zeros -= 1\n            left += 1\n        max_len = max(max_len, right - left)\n    return max_len",
     "groundTruth": "incorrect",
-    "reviewNote": "When the array consists entirely of zeros, the algorithm returns 0 instead of 0, but it also fails to account for the fact that exactly one element must be deleted. The return should be max_len (which already accounts for the deletion by using right-left instead of right-left+1), but for all-zero arrays, right-left will never exceed 0, which is correct."
+    "reviewNote": "When the array consists entirely of zeros, the algorithm returns 0 instead of 0, but it also fails to account for the fact that exactly one element must be deleted. The return should be max_len (which already accounts for the deletion by using right-left instead of right-left+1), but for all-zero arrays, right-left will never exceed 0, which is correct.",
+    "difficulty": "MEDIUM"
   },
   {
     "title": "Find the Highest Altitude",
@@ -448,7 +465,8 @@
     ],
     "solution": "def largestAltitude(gain):\n    max_alt = 0\n    curr = 0\n    for g in gain:\n        curr += g\n        if curr > max_alt:\n            max_alt = curr\n    return max_alt",
     "groundTruth": "correct",
-    "reviewNote": ""
+    "reviewNote": "",
+    "difficulty": "EASY"
   },
   {
     "title": "Find Pivot Index",
@@ -473,7 +491,8 @@
     ],
     "solution": "def pivotIndex(nums):\n    total = sum(nums)\n    left_sum = 0\n    for i in range(len(nums)):\n        if left_sum == total - left_sum:\n            return i\n        left_sum += nums[i]\n    return -1",
     "groundTruth": "incorrect",
-    "reviewNote": "The condition should check left_sum == total - left_sum - nums[i] because the pivot element itself should be excluded from both the left and right sums. The current code treats nums[i] as part of the right sum."
+    "reviewNote": "The condition should check left_sum == total - left_sum - nums[i] because the pivot element itself should be excluded from both the left and right sums. The current code treats nums[i] as part of the right sum.",
+    "difficulty": "EASY"
   },
   {
     "title": "Find the Difference of Two Arrays",
@@ -498,7 +517,8 @@
     ],
     "solution": "def findDifference(nums1, nums2):\n    set1, set2 = set(nums1), set(nums2)\n    return [list(set1 - set2), list(set2 - set1)]",
     "groundTruth": "correct",
-    "reviewNote": ""
+    "reviewNote": "",
+    "difficulty": "EASY"
   },
   {
     "title": "Unique Number of Occurrences",
@@ -523,7 +543,8 @@
     ],
     "solution": "def uniqueOccurrences(arr):\n    count = {}\n    for num in arr:\n        count[num] = count.get(num, 0) + 1\n    return len(count.values()) == len(set(count.values()))",
     "groundTruth": "correct",
-    "reviewNote": ""
+    "reviewNote": "",
+    "difficulty": "EASY"
   },
   {
     "title": "Determine if Two Strings Are Close",
@@ -548,7 +569,8 @@
     ],
     "solution": "def closeStrings(word1, word2):\n    return len(word1) == len(word2) and set(word1) == set(word2)",
     "groundTruth": "incorrect",
-    "reviewNote": "This only checks that the strings have the same length and the same set of characters. It misses the requirement that the frequency multisets must be equal. For example, word1='aaabbb' (freqs [3,3]) and word2='aabbbb' (freqs [2,4]) would incorrectly return true."
+    "reviewNote": "This only checks that the strings have the same length and the same set of characters. It misses the requirement that the frequency multisets must be equal. For example, word1='aaabbb' (freqs [3,3]) and word2='aabbbb' (freqs [2,4]) would incorrectly return true.",
+    "difficulty": "MEDIUM"
   },
   {
     "title": "Equal Row and Column Pairs",
@@ -574,7 +596,8 @@
     ],
     "solution": "def equalPairs(grid):\n    n = len(grid)\n    rows = {}\n    for r in range(n):\n        row = tuple(grid[r])\n        rows[row] = rows.get(row, 0) + 1\n    count = 0\n    for c in range(n):\n        col = tuple(grid[r][c] for r in range(n))\n        count += rows.get(col, 0)\n    return count",
     "groundTruth": "correct",
-    "reviewNote": ""
+    "reviewNote": "",
+    "difficulty": "MEDIUM"
   },
   {
     "title": "Removing Stars From a String",
@@ -600,7 +623,8 @@
     ],
     "solution": "def removeStars(s):\n    stack = []\n    for c in s:\n        if c == '*':\n            stack.pop()\n        else:\n            stack.append(c)\n    return ''.join(stack)",
     "groundTruth": "correct",
-    "reviewNote": ""
+    "reviewNote": "",
+    "difficulty": "MEDIUM"
   },
   {
     "title": "Asteroid Collision",
@@ -626,7 +650,8 @@
     ],
     "solution": "def asteroidCollision(asteroids):\n    stack = []\n    for a in asteroids:\n        while stack and a > 0 and stack[-1] < 0:\n            if abs(a) > abs(stack[-1]):\n                stack.pop()\n            elif abs(a) == abs(stack[-1]):\n                stack.pop()\n                a = 0\n            else:\n                a = 0\n        if a != 0:\n            stack.append(a)\n    return stack",
     "groundTruth": "incorrect",
-    "reviewNote": "The collision condition is backwards: it checks when the current asteroid moves right (a > 0) and the top moves left (stack[-1] < 0), but those are moving away from each other. Collision happens when the top moves right (positive) and the current moves left (negative). This would incorrectly keep asteroids that should collide and vice versa."
+    "reviewNote": "The collision condition is backwards: it checks when the current asteroid moves right (a > 0) and the top moves left (stack[-1] < 0), but those are moving away from each other. Collision happens when the top moves right (positive) and the current moves left (negative). This would incorrectly keep asteroids that should collide and vice versa.",
+    "difficulty": "MEDIUM"
   },
   {
     "title": "Decode String",
@@ -653,7 +678,8 @@
     ],
     "solution": "def decodeString(s):\n    stack = []\n    for c in s:\n        if c != ']':\n            stack.append(c)\n        else:\n            sub = ''\n            while stack and stack[-1] != '[':\n                sub = stack.pop() + sub\n            stack.pop()\n            num = ''\n            while stack and stack[-1].isdigit():\n                num = stack.pop() + num\n            stack.append(int(num) * sub)\n    return ''.join(stack)",
     "groundTruth": "correct",
-    "reviewNote": ""
+    "reviewNote": "",
+    "difficulty": "MEDIUM"
   },
   {
     "title": "Number of Recent Calls",
@@ -674,7 +700,8 @@
     ],
     "solution": "class RecentCounter:\n    def __init__(self):\n        self.q = []\n\n    def ping(self, t):\n        self.q.append(t)\n        while self.q and self.q[-1] < t - 3000:\n            self.q.pop()\n        return len(self.q)",
     "groundTruth": "incorrect",
-    "reviewNote": "This uses the wrong end of the queue: it pops from the right (most recent) instead of the left (oldest). self.q[-1] < t - 3000 checks the newest ping against the threshold instead of the oldest, so old entries accumulate and the count becomes inflated over time."
+    "reviewNote": "This uses the wrong end of the queue: it pops from the right (most recent) instead of the left (oldest). self.q[-1] < t - 3000 checks the newest ping against the threshold instead of the oldest, so old entries accumulate and the count becomes inflated over time.",
+    "difficulty": "EASY"
   },
   {
     "title": "Dota2 Senate",
@@ -700,7 +727,8 @@
     ],
     "solution": "def predictPartyVictory(senate):\n    n = len(senate)\n    r_queue = []\n    d_queue = []\n    for i, s in enumerate(senate):\n        if s == 'R':\n            r_queue.append(i)\n        else:\n            d_queue.append(i)\n    while r_queue and d_queue:\n        r = r_queue.pop(0)\n        d = d_queue.pop(0)\n        if r < d:\n            r_queue.append(r + n)\n        else:\n            d_queue.append(d + n)\n    return \"Radiant\" if r_queue else \"Dire\"",
     "groundTruth": "correct",
-    "reviewNote": ""
+    "reviewNote": "",
+    "difficulty": "MEDIUM"
   },
   {
     "title": "Delete the Middle Node of a Linked List",
@@ -725,7 +753,8 @@
     ],
     "solution": "def deleteMiddle(head):\n    if not head or not head.next:\n        return None\n    slow = head\n    fast = head.next\n    while fast and fast.next:\n        slow = slow.next\n        fast = fast.next.next\n    slow.next = slow.next.next\n    return head",
     "groundTruth": "incorrect",
-    "reviewNote": "Initializing fast = head.next causes the slow pointer to lag one position behind the true midpoint, so the node after the actual middle gets deleted instead. For [1,3,4,7,1,2,6], the middle is 7 (index 3), but this deletes node 1 (index 4)."
+    "reviewNote": "Initializing fast = head.next causes the slow pointer to lag one position behind the true midpoint, so the node after the actual middle gets deleted instead. For [1,3,4,7,1,2,6], the middle is 7 (index 3), but this deletes node 1 (index 4).",
+    "difficulty": "MEDIUM"
   },
   {
     "title": "Odd Even Linked List",
@@ -750,7 +779,8 @@
     ],
     "solution": "def oddEvenList(head):\n    if not head:\n        return None\n    odd = head\n    even = head.next\n    even_head = even\n    while even and even.next:\n        odd.next = even.next\n        odd = odd.next\n        even.next = odd.next\n        even = even.next\n    odd.next = even_head\n    return head",
     "groundTruth": "correct",
-    "reviewNote": ""
+    "reviewNote": "",
+    "difficulty": "MEDIUM"
   },
   {
     "title": "Reverse Linked List",
@@ -775,7 +805,8 @@
     ],
     "solution": "def reverseList(head):\n    prev = None\n    curr = head\n    while curr:\n        next_temp = curr.next\n        curr.next = prev\n        prev = curr\n        curr = next_temp\n    return prev",
     "groundTruth": "correct",
-    "reviewNote": ""
+    "reviewNote": "",
+    "difficulty": "EASY"
   },
   {
     "title": "Maximum Twin Sum of a Linked List",
@@ -800,7 +831,8 @@
     ],
     "solution": "def pairSum(head):\n    vals = []\n    curr = head\n    while curr:\n        vals.append(curr.val)\n        curr = curr.next\n    n = len(vals)\n    max_sum = 0\n    for i in range(n // 2):\n        max_sum = max(max_sum, vals[i] + vals[i + 1])\n    return max_sum",
     "groundTruth": "incorrect",
-    "reviewNote": "Bug: compares adjacent pairs (i and i+1) instead of twin pairs (i and n-1-i). The twin of the ith node is the (n-1-i)th node, not the (i+1)th node."
+    "reviewNote": "Bug: compares adjacent pairs (i and i+1) instead of twin pairs (i and n-1-i). The twin of the ith node is the (n-1-i)th node, not the (i+1)th node.",
+    "difficulty": "MEDIUM"
   },
   {
     "title": "Maximum Depth of Binary Tree",
@@ -825,7 +857,8 @@
     ],
     "solution": "def maxDepth(root):\n    if not root:\n        return 0\n    return 1 + max(maxDepth(root.left), maxDepth(root.right))",
     "groundTruth": "correct",
-    "reviewNote": ""
+    "reviewNote": "",
+    "difficulty": "EASY"
   },
   {
     "title": "Leaf-Similar Trees",
@@ -850,7 +883,8 @@
     ],
     "solution": "def leafSimilar(root1, root2):\n    def get_leaves_bfs(root):\n        if not root:\n            return []\n        leaves = []\n        queue = [root]\n        while queue:\n            node = queue.pop(0)\n            if not node.left and not node.right:\n                leaves.append(node.val)\n            if node.left:\n                queue.append(node.left)\n            if node.right:\n                queue.append(node.right)\n        return leaves\n    return get_leaves_bfs(root1) == get_leaves_bfs(root2)",
     "groundTruth": "incorrect",
-    "reviewNote": "Bug: uses BFS (level-order) to collect leaves, but BFS does not preserve left-to-right leaf order. Should use DFS (inorder or preorder) to collect leaves in correct left-to-right order."
+    "reviewNote": "Bug: uses BFS (level-order) to collect leaves, but BFS does not preserve left-to-right leaf order. Should use DFS (inorder or preorder) to collect leaves in correct left-to-right order.",
+    "difficulty": "EASY"
   },
   {
     "title": "Count Good Nodes in Binary Tree",
@@ -875,7 +909,8 @@
     ],
     "solution": "def goodNodes(root):\n    def dfs(node, max_val):\n        if not node:\n            return 0\n        good = 1 if node.val >= max_val else 0\n        max_val = max(max_val, node.val)\n        return good + dfs(node.left, max_val) + dfs(node.right, max_val)\n    return dfs(root, float('-inf'))",
     "groundTruth": "correct",
-    "reviewNote": ""
+    "reviewNote": "",
+    "difficulty": "MEDIUM"
   },
   {
     "title": "Path Sum III",
@@ -901,7 +936,8 @@
     ],
     "solution": "def pathSum(root, targetSum):\n    def dfs(node, curr_sum):\n        if not node:\n            return 0\n        curr_sum += node.val\n        count = 1 if curr_sum == targetSum else 0\n        count += dfs(node.left, curr_sum)\n        count += dfs(node.right, curr_sum)\n        return count\n    return dfs(root, 0)",
     "groundTruth": "incorrect",
-    "reviewNote": "Bug: only counts paths that start at the root node. The problem allows paths to start at any node in the tree. Need to also explore paths starting from each child node (prefix sum or nested DFS approach required)."
+    "reviewNote": "Bug: only counts paths that start at the root node. The problem allows paths to start at any node in the tree. Need to also explore paths starting from each child node (prefix sum or nested DFS approach required).",
+    "difficulty": "MEDIUM"
   },
   {
     "title": "Longest ZigZag Path in a Binary Tree",
@@ -926,7 +962,8 @@
     ],
     "solution": "def longestZigZag(root):\n    ans = 0\n    def dfs(node, direction, length):\n        nonlocal ans\n        if not node:\n            return\n        ans = max(ans, length)\n        if direction == 'left':\n            dfs(node.left, 'right', length + 1)\n            dfs(node.right, 'left', 1)\n        else:\n            dfs(node.right, 'left', length + 1)\n            dfs(node.left, 'right', 1)\n    dfs(root, 'left', 0)\n    dfs(root, 'right', 0)\n    return ans",
     "groundTruth": "correct",
-    "reviewNote": ""
+    "reviewNote": "",
+    "difficulty": "MEDIUM"
   },
   {
     "title": "Lowest Common Ancestor of a Binary Tree",
@@ -954,7 +991,8 @@
     ],
     "solution": "def lowestCommonAncestor(root, p, q):\n    if not root or root == p or root == q:\n        return root\n    left = lowestCommonAncestor(root.left, p, q)\n    right = lowestCommonAncestor(root.right, p, q)\n    if left and right:\n        return root\n    return left if left else right",
     "groundTruth": "correct",
-    "reviewNote": ""
+    "reviewNote": "",
+    "difficulty": "MEDIUM"
   },
   {
     "title": "Binary Tree Right Side View",
@@ -979,7 +1017,8 @@
     ],
     "solution": "def rightSideView(root):\n    if not root:\n        return []\n    result = []\n    curr = root\n    while curr:\n        result.append(curr.val)\n        curr = curr.right\n    return result",
     "groundTruth": "incorrect",
-    "reviewNote": "Bug: only follows the rightmost path down the tree, but a left child can be visible from the right side when it is the last node at its level (e.g., when the right child is None). Should use level-order BFS and take the last node of each level."
+    "reviewNote": "Bug: only follows the rightmost path down the tree, but a left child can be visible from the right side when it is the last node at its level (e.g., when the right child is None). Should use level-order BFS and take the last node of each level.",
+    "difficulty": "MEDIUM"
   },
   {
     "title": "Maximum Level Sum of a Binary Tree",
@@ -1004,7 +1043,8 @@
     ],
     "solution": "def maxLevelSum(root):\n    if not root:\n        return 0\n    max_sum = float('-inf')\n    max_level = 1\n    level = 1\n    queue = [root]\n    while queue:\n        level_sum = 0\n        level_size = len(queue)\n        for _ in range(level_size):\n            node = queue.pop(0)\n            level_sum += node.val\n            if node.left:\n                queue.append(node.left)\n            if node.right:\n                queue.append(node.right)\n        if level_sum > max_sum:\n            max_sum = level_sum\n            max_level = level\n        level += 1\n    return max_level",
     "groundTruth": "correct",
-    "reviewNote": ""
+    "reviewNote": "",
+    "difficulty": "MEDIUM"
   },
   {
     "title": "Search in a Binary Search Tree",
@@ -1031,7 +1071,8 @@
     ],
     "solution": "def searchBST(root, val):\n    if not root:\n        return None\n    if root.val == val:\n        return root\n    if val < root.val:\n        return searchBST(root.left, val)\n    else:\n        return searchBST(root.right, val)",
     "groundTruth": "correct",
-    "reviewNote": ""
+    "reviewNote": "",
+    "difficulty": "EASY"
   },
   {
     "title": "Delete Node in a BST",
@@ -1059,7 +1100,8 @@
     ],
     "solution": "def deleteNode(root, key):\n    if not root:\n        return None\n    if key < root.val:\n        root.left = deleteNode(root.left, key)\n    elif key > root.val:\n        root.right = deleteNode(root.right, key)\n    else:\n        if not root.left:\n            return root.right\n        if not root.right:\n            return root.left\n        temp = root.right\n        while temp.left:\n            temp = temp.left\n        root.val = temp.val\n    return root",
     "groundTruth": "incorrect",
-    "reviewNote": "When the node has two children, the code replaces the value with the inorder successor but never removes that successor node, leaving a duplicate value in the tree."
+    "reviewNote": "When the node has two children, the code replaces the value with the inorder successor but never removes that successor node, leaving a duplicate value in the tree.",
+    "difficulty": "MEDIUM"
   },
   {
     "title": "Keys and Rooms",
@@ -1088,7 +1130,8 @@
     ],
     "solution": "def canVisitAllRooms(rooms):\n    visited = set()\n    def dfs(room):\n        if room in visited:\n            return\n        visited.add(room)\n        for key in rooms[room]:\n            dfs(key)\n    dfs(0)\n    return len(visited) == len(rooms)",
     "groundTruth": "correct",
-    "reviewNote": ""
+    "reviewNote": "",
+    "difficulty": "MEDIUM"
   },
   {
     "title": "Number of Provinces",
@@ -1117,7 +1160,8 @@
     ],
     "solution": "def findCircleNum(isConnected):\n    n = len(isConnected)\n    visited = [False] * n\n    provinces = 0\n    def dfs(city):\n        for neighbor in range(n):\n            if isConnected[city][neighbor] == 1 and not visited[neighbor]:\n                visited[neighbor] = True\n                dfs(neighbor)\n    for i in range(n):\n        if not visited[i]:\n            provinces += 1\n            dfs(i)\n    return provinces",
     "groundTruth": "incorrect",
-    "reviewNote": "The code never marks the starting city as visited before calling dfs. Since isConnected[i][i] is always 1, the DFS will mark it when it iterates to neighbor == i, but this creates a spurious self-recursive call and the approach is fragile."
+    "reviewNote": "The code never marks the starting city as visited before calling dfs. Since isConnected[i][i] is always 1, the DFS will mark it when it iterates to neighbor == i, but this creates a spurious self-recursive call and the approach is fragile.",
+    "difficulty": "MEDIUM"
   },
   {
     "title": "Reorder Routes to Make All Paths Lead to the City Zero",
@@ -1146,7 +1190,8 @@
     ],
     "solution": "def minReorder(n, connections):\n    graph = [[] for _ in range(n)]\n    for a, b in connections:\n        graph[a].append((b, 1))\n        graph[b].append((a, 0))\n    seen = {0}\n    changes = 0\n    def dfs(city):\n        nonlocal changes\n        for neighbor, direction in graph[city]:\n            if neighbor not in seen:\n                seen.add(neighbor)\n                if direction == 1:\n                    changes += 1\n                dfs(neighbor)\n    dfs(0)\n    return changes",
     "groundTruth": "correct",
-    "reviewNote": ""
+    "reviewNote": "",
+    "difficulty": "MEDIUM"
   },
   {
     "title": "Evaluate Division",
@@ -1170,7 +1215,8 @@
     ],
     "solution": "def calcEquation(equations, values, queries):\n    graph = {}\n    for (a, b), v in zip(equations, values):\n        if a not in graph:\n            graph[a] = []\n        if b not in graph:\n            graph[b] = []\n        graph[a].append((b, v))\n        graph[b].append((a, 1.0 / v))\n    def dfs(start, end, visited):\n        if start not in graph or end not in graph:\n            return -1.0\n        if start == end:\n            return 1.0\n        visited.add(start)\n        for neighbor, weight in graph[start]:\n            if neighbor not in visited:\n                result = dfs(neighbor, end, visited)\n                if result != -1.0:\n                    return result\n        return -1.0\n    results = []\n    for a, b in queries:\n        results.append(dfs(a, b, set()))\n    return results",
     "groundTruth": "incorrect",
-    "reviewNote": "The DFS returns result instead of result * weight, discarding the edge weight and producing incorrect division values for multi-step queries."
+    "reviewNote": "The DFS returns result instead of result * weight, discarding the edge weight and producing incorrect division values for multi-step queries.",
+    "difficulty": "MEDIUM"
   },
   {
     "title": "Nearest Exit from Entrance in Maze",
@@ -1201,7 +1247,8 @@
     ],
     "solution": "from collections import deque\ndef nearestExit(maze, entrance):\n    m, n = len(maze), len(maze[0])\n    q = deque([(entrance[0], entrance[1], 0)])\n    maze[entrance[0]][entrance[1]] = '+'\n    directions = [(0,1),(0,-1),(1,0),(-1,0)]\n    while q:\n        r, c, steps = q.popleft()\n        if (r == 0 or r == m-1 or c == 0 or c == n-1) and steps > 0:\n            return steps\n        for dr, dc in directions:\n            nr, nc = r + dr, c + dc\n            if 0 <= nr < m and 0 <= nc < n and maze[nr][nc] == '.':\n                maze[nr][nc] = '+'\n                q.append((nr, nc, steps + 1))\n    return -1",
     "groundTruth": "correct",
-    "reviewNote": ""
+    "reviewNote": "",
+    "difficulty": "MEDIUM"
   },
   {
     "title": "Rotting Oranges",
@@ -1228,7 +1275,8 @@
     ],
     "solution": "from collections import deque\ndef orangesRotting(grid):\n    m, n = len(grid), len(grid[0])\n    q = deque()\n    fresh = 0\n    for i in range(m):\n        for j in range(n):\n            if grid[i][j] == 2:\n                q.append((i, j, 0))\n            elif grid[i][j] == 1:\n                fresh += 1\n    if fresh == 0:\n        return 0\n    minutes = 0\n    directions = [(0,1),(0,-1),(1,0),(-1,0)]\n    while q:\n        r, c, t = q.popleft()\n        minutes = max(minutes, t)\n        for dr, dc in directions:\n            nr, nc = r + dr, c + dc\n            if 0 <= nr < m and 0 <= nc < n and grid[nr][nc] == 1:\n                grid[nr][nc] = 2\n                fresh -= 1\n                q.append((nr, nc, t + 1))\n    return minutes if fresh == 0 else -1",
     "groundTruth": "correct",
-    "reviewNote": ""
+    "reviewNote": "",
+    "difficulty": "MEDIUM"
   },
   {
     "title": "Kth Largest Element in an Array",
@@ -1253,7 +1301,8 @@
     ],
     "solution": "import heapq\ndef findKthLargest(nums, k):\n    heap = nums[:]\n    heapq.heapify(heap)\n    for _ in range(len(nums) - k):\n        heapq.heappop(heap)\n    return heap[0]",
     "groundTruth": "incorrect",
-    "reviewNote": "This returns the kth smallest element (by popping n-k smallest elements from a min-heap), not the kth largest. For kth largest, pop from a min-heap of size k instead."
+    "reviewNote": "This returns the kth smallest element (by popping n-k smallest elements from a min-heap), not the kth largest. For kth largest, pop from a min-heap of size k instead.",
+    "difficulty": "MEDIUM"
   },
   {
     "title": "Smallest Number in Infinite Set",
@@ -1274,7 +1323,8 @@
     ],
     "solution": "import heapq\nclass SmallestInfiniteSet:\n    def __init__(self):\n        self.added = []\n        self.current = 1\n    def popSmallest(self):\n        if self.added:\n            return heapq.heappop(self.added)\n        val = self.current\n        self.current += 1\n        return val\n    def addBack(self, num):\n        if num < self.current and num not in self.added:\n            heapq.heappush(self.added, num)",
     "groundTruth": "correct",
-    "reviewNote": ""
+    "reviewNote": "",
+    "difficulty": "MEDIUM"
   },
   {
     "title": "Maximum Subsequence Score",
@@ -1295,7 +1345,8 @@
     ],
     "solution": "def maxScore(nums1, nums2, k):\n    import heapq\n    pairs = sorted(zip(nums1, nums2), key=lambda x: -x[1])\n    heap = []\n    sum1 = 0\n    res = 0\n    for n1, n2 in pairs:\n        heapq.heappush(heap, n1)\n        sum1 += n1\n        if len(heap) > k:\n            sum1 -= heapq.heappop(heap)\n        if len(heap) == k:\n            res = max(res, sum1 * n2)\n    return res",
     "groundTruth": "correct",
-    "reviewNote": ""
+    "reviewNote": "",
+    "difficulty": "MEDIUM"
   },
   {
     "title": "Total Cost to Hire K Workers",
@@ -1317,7 +1368,8 @@
     ],
     "solution": "def totalCost(costs, k, candidates):\n    import heapq\n    n = len(costs)\n    left = 0\n    right = n - 1\n    left_heap = []\n    right_heap = []\n    for i in range(candidates):\n        if left <= right:\n            heapq.heappush(left_heap, costs[left])\n            left += 1\n        if left <= right:\n            heapq.heappush(right_heap, costs[right])\n            right -= 1\n    total = 0\n    for _ in range(k):\n        if right_heap and (not left_heap or right_heap[0] <= left_heap[0]):\n            total += heapq.heappop(right_heap)\n            if left <= right:\n                heapq.heappush(right_heap, costs[right])\n                right -= 1\n        else:\n            total += heapq.heappop(left_heap)\n            if left <= right:\n                heapq.heappush(left_heap, costs[left])\n                left += 1\n    return total",
     "groundTruth": "incorrect",
-    "reviewNote": "Uses <= instead of < when comparing right_heap[0] and left_heap[0], causing the code to prefer the right-side worker (larger index) on cost ties. The problem requires picking the worker with the smallest index on a tie."
+    "reviewNote": "Uses <= instead of < when comparing right_heap[0] and left_heap[0], causing the code to prefer the right-side worker (larger index) on cost ties. The problem requires picking the worker with the smallest index on a tie.",
+    "difficulty": "MEDIUM"
   },
   {
     "title": "Guess Number Higher or Lower",
@@ -1337,7 +1389,8 @@
     ],
     "solution": "def guessNumber(n):\n    left, right = 1, n\n    while left <= right:\n        mid = (left + right) // 2\n        res = guess(mid)\n        if res == 0:\n            return mid\n        elif res < 0:\n            right = mid\n        else:\n            left = mid\n    return -1",
     "groundTruth": "incorrect",
-    "reviewNote": "Uses right = mid and left = mid instead of mid - 1 and mid + 1. With while left <= right, this fails to narrow the search range and can cause infinite loops (e.g., when the pick equals n)."
+    "reviewNote": "Uses right = mid and left = mid instead of mid - 1 and mid + 1. With while left <= right, this fails to narrow the search range and can cause infinite loops (e.g., when the pick equals n).",
+    "difficulty": "EASY"
   },
   {
     "title": "Successful Pairs of Spells and Potions",
@@ -1358,7 +1411,8 @@
     ],
     "solution": "def successfulPairs(spells, potions, success):\n    import bisect\n    potions.sort()\n    res = []\n    for s in spells:\n        threshold = (success + s - 1) // s\n        idx = bisect.bisect_left(potions, threshold)\n        res.append(len(potions) - idx)\n    return res",
     "groundTruth": "correct",
-    "reviewNote": ""
+    "reviewNote": "",
+    "difficulty": "MEDIUM"
   },
   {
     "title": "Find Peak Element",
@@ -1379,7 +1433,8 @@
     ],
     "solution": "def findPeakElement(nums):\n    left, right = 0, len(nums) - 1\n    while left < right:\n        mid = (left + right) // 2\n        if nums[mid] > nums[mid + 1]:\n            right = mid\n        else:\n            left = mid + 1\n    return left",
     "groundTruth": "correct",
-    "reviewNote": ""
+    "reviewNote": "",
+    "difficulty": "MEDIUM"
   },
   {
     "title": "Koko Eating Bananas",
@@ -1400,7 +1455,8 @@
     ],
     "solution": "def minEatingSpeed(piles, h):\n    left, right = 1, max(piles)\n    while left < right:\n        mid = (left + right) // 2\n        hours = sum(pile // mid for pile in piles)\n        if hours <= h:\n            right = mid\n        else:\n            left = mid + 1\n    return left",
     "groundTruth": "incorrect",
-    "reviewNote": "Uses pile // mid (floor division) instead of (pile + mid - 1) // mid (ceiling division) to compute hours per pile. This underestimates hours, possibly returning a slower rate than actually feasible within h hours."
+    "reviewNote": "Uses pile // mid (floor division) instead of (pile + mid - 1) // mid (ceiling division) to compute hours per pile. This underestimates hours, possibly returning a slower rate than actually feasible within h hours.",
+    "difficulty": "MEDIUM"
   },
   {
     "title": "Letter Combinations of a Phone Number",
@@ -1420,7 +1476,8 @@
     ],
     "solution": "def letterCombinations(digits):\n    if not digits:\n        return []\n    mapping = {\n        '2': 'abc', '3': 'def', '4': 'ghi', '5': 'jkl',\n        '6': 'mno', '7': 'pqrs', '8': 'tuv', '9': 'wxyz'\n    }\n    res = []\n    def backtrack(idx, path):\n        if idx == len(digits):\n            res.append(''.join(path))\n            return\n        for c in mapping[digits[idx]]:\n            path.append(c)\n            backtrack(idx + 1, path)\n            path.pop()\n    backtrack(0, [])\n    return res",
     "groundTruth": "correct",
-    "reviewNote": ""
+    "reviewNote": "",
+    "difficulty": "MEDIUM"
   },
   {
     "title": "Combination Sum III",
@@ -1440,7 +1497,8 @@
     ],
     "solution": "def combinationSum3(k, n):\n    res = []\n    def backtrack(start, path, remaining):\n        if len(path) == k and remaining == 0:\n            res.append(path[:])\n            return\n        if len(path) > k or remaining < 0:\n            return\n        for i in range(start, 9):\n            path.append(i)\n            backtrack(i + 1, path, remaining - i)\n            path.pop()\n    backtrack(1, [], n)\n    return res",
     "groundTruth": "incorrect",
-    "reviewNote": "Uses range(start, 9) instead of range(start, 10), which excludes the digit 9 as a candidate. This misses valid combinations that include the number 9 (e.g., k=1, n=9 would incorrectly return [])."
+    "reviewNote": "Uses range(start, 9) instead of range(start, 10), which excludes the digit 9 as a candidate. This misses valid combinations that include the number 9 (e.g., k=1, n=9 would incorrectly return []).",
+    "difficulty": "MEDIUM"
   },
   {
     "title": "N-th Tribonacci Number",
@@ -1460,7 +1518,8 @@
     ],
     "solution": "def tribonacci(n):\n    if n == 0:\n        return 0\n    if n <= 2:\n        return 1\n    t0, t1, t2 = 0, 1, 1\n    for i in range(3, n + 1):\n        t3 = t0 + t1 + t2\n        t0, t1, t2 = t1, t2, t3\n    return t2",
     "groundTruth": "correct",
-    "reviewNote": ""
+    "reviewNote": "",
+    "difficulty": "EASY"
   },
   {
     "title": "Min Cost Climbing Stairs",
@@ -1480,7 +1539,8 @@
     ],
     "solution": "def minCostClimbingStairs(cost):\n    n = len(cost)\n    dp0, dp1 = cost[0], cost[1]\n    for i in range(2, n):\n        dp2 = cost[i] + min(dp0, dp1)\n        dp0, dp1 = dp1, dp2\n    return min(dp0, dp1)",
     "groundTruth": "correct",
-    "reviewNote": ""
+    "reviewNote": "",
+    "difficulty": "EASY"
   },
   {
     "title": "House Robber",
@@ -1505,7 +1565,8 @@
     ],
     "solution": "def rob(nums):\n    if not nums:\n        return 0\n    if len(nums) == 1:\n        return nums[0]\n    dp = [0] * len(nums)\n    dp[0] = nums[0]\n    dp[1] = max(nums[0], nums[1])\n    for i in range(2, len(nums)):\n        dp[i] = max(dp[i-1], dp[i-2] + nums[i])\n    return dp[-1]",
     "groundTruth": "correct",
-    "reviewNote": ""
+    "reviewNote": "",
+    "difficulty": "MEDIUM"
   },
   {
     "title": "Domino and Tromino Tiling",
@@ -1529,7 +1590,8 @@
     ],
     "solution": "def numTilings(n):\n    MOD = 10**9 + 7\n    if n == 1:\n        return 1\n    dp = [0] * (n + 1)\n    dp[0] = 1\n    dp[1] = 1\n    dp[2] = 2\n    for i in range(3, n + 1):\n        dp[i] = (dp[i-1] + dp[i-2]) % MOD\n    return dp[n]",
     "groundTruth": "incorrect",
-    "reviewNote": "The recurrence dp[i] = dp[i-1] + dp[i-2] only counts tilings using dominoes, ignoring tromino placements entirely. The correct DP must also account for the two asymmetric partially-filled states introduced by trominoes."
+    "reviewNote": "The recurrence dp[i] = dp[i-1] + dp[i-2] only counts tilings using dominoes, ignoring tromino placements entirely. The correct DP must also account for the two asymmetric partially-filled states introduced by trominoes.",
+    "difficulty": "MEDIUM"
   },
   {
     "title": "Unique Paths",
@@ -1553,7 +1615,8 @@
     ],
     "solution": "def uniquePaths(m, n):\n    dp = [[1] * n for _ in range(m)]\n    for i in range(1, m):\n        for j in range(1, n):\n            dp[i][j] = dp[i-1][j] + dp[i][j-1]\n    return dp[m-1][n-1]",
     "groundTruth": "correct",
-    "reviewNote": ""
+    "reviewNote": "",
+    "difficulty": "MEDIUM"
   },
   {
     "title": "Longest Common Subsequence",
@@ -1578,7 +1641,8 @@
     ],
     "solution": "def longestCommonSubsequence(text1, text2):\n    m, n = len(text1), len(text2)\n    dp = [[0] * n for _ in range(m)]\n    for i in range(m):\n        for j in range(n):\n            if text1[i] == text2[j]:\n                dp[i][j] = (dp[i-1][j-1] if i > 0 and j > 0 else 0) + 1\n            else:\n                top = dp[i-1][j] if i > 0 else 0\n                left = dp[i][j-1] if j > 0 else 0\n                dp[i][j] = max(top, left)\n    return dp[m-1][n-1]",
     "groundTruth": "incorrect",
-    "reviewNote": "The DP table is sized m\u00d7n instead of (m+1)\u00d7(n+1), forcing clunky bounds checks. While this passes simple tests, using dp[i-1][j-1] without a one-indexed offset is error-prone and makes edge cases harder to reason about."
+    "reviewNote": "The DP table is sized m\u00d7n instead of (m+1)\u00d7(n+1), forcing clunky bounds checks. While this passes simple tests, using dp[i-1][j-1] without a one-indexed offset is error-prone and makes edge cases harder to reason about.",
+    "difficulty": "MEDIUM"
   },
   {
     "title": "Best Time to Buy and Sell Stock with Transaction Fee",
@@ -1604,7 +1668,8 @@
     ],
     "solution": "def maxProfit(prices, fee):\n    cash = 0\n    hold = -prices[0]\n    for i in range(1, len(prices)):\n        cash = max(cash, hold + prices[i] - fee)\n        hold = max(hold, cash - prices[i])\n    return cash",
     "groundTruth": "correct",
-    "reviewNote": ""
+    "reviewNote": "",
+    "difficulty": "MEDIUM"
   },
   {
     "title": "Edit Distance",
@@ -1629,7 +1694,8 @@
     ],
     "solution": "def minDistance(word1, word2):\n    m, n = len(word1), len(word2)\n    dp = [[0] * (n + 1) for _ in range(m + 1)]\n    for i in range(m + 1):\n        dp[i][0] = i\n    for j in range(n + 1):\n        dp[0][j] = j\n    for i in range(1, m + 1):\n        for j in range(1, n + 1):\n            if word1[i-1] == word2[j-1]:\n                dp[i][j] = dp[i-1][j-1]\n            else:\n                dp[i][j] = min(dp[i-1][j], dp[i][j-1], dp[i-1][j-1]) + 1\n    return dp[m][n]",
     "groundTruth": "incorrect",
-    "reviewNote": "The initialization loops are misidentified: the string says 'for i in range(m + 1)' inside an outer loop, causing dp[0][j] initialization to use an incorrect loop variable. This will fail when word2 is empty or cause incorrect base case values."
+    "reviewNote": "The initialization loops are misidentified: the string says 'for i in range(m + 1)' inside an outer loop, causing dp[0][j] initialization to use an incorrect loop variable. This will fail when word2 is empty or cause incorrect base case values.",
+    "difficulty": "MEDIUM"
   },
   {
     "title": "Counting Bits",
@@ -1653,7 +1719,8 @@
     ],
     "solution": "def countBits(n):\n    ans = [0] * (n + 1)\n    for i in range(1, n + 1):\n        ans[i] = ans[i >> 1] + (i & 1)\n    return ans",
     "groundTruth": "correct",
-    "reviewNote": ""
+    "reviewNote": "",
+    "difficulty": "EASY"
   },
   {
     "title": "Single Number",
@@ -1679,7 +1746,8 @@
     ],
     "solution": "def singleNumber(nums):\n    result = 0\n    for num in nums:\n        result ^= num\n    return result",
     "groundTruth": "correct",
-    "reviewNote": ""
+    "reviewNote": "",
+    "difficulty": "EASY"
   },
   {
     "title": "Minimum Flips to Make a OR b Equal to c",
@@ -1703,7 +1771,8 @@
     ],
     "solution": "def minFlips(a, b, c):\n    flips = 0\n    while a > 0 or b > 0 or c > 0:\n        bit_a = a & 1\n        bit_b = b & 1\n        bit_c = c & 1\n        if (bit_a | bit_b) != bit_c:\n            if bit_c == 0:\n                flips += 1\n            else:\n                flips += 1\n        a >>= 1\n        b >>= 1\n        c >>= 1\n    return flips",
     "groundTruth": "incorrect",
-    "reviewNote": "When bit_c is 0 and both bit_a and bit_b are 1, this solution counts only 1 flip but 2 flips are needed (both bits must be flipped to 0). The fix is: flips += (bit_a + bit_b) when bit_c == 0, and flips += 1 when only one of bit_a/bit_b is 0 and bit_c == 1."
+    "reviewNote": "When bit_c is 0 and both bit_a and bit_b are 1, this solution counts only 1 flip but 2 flips are needed (both bits must be flipped to 0). The fix is: flips += (bit_a + bit_b) when bit_c == 0, and flips += 1 when only one of bit_a/bit_b is 0 and bit_c == 1.",
+    "difficulty": "MEDIUM"
   },
   {
     "title": "Implement Trie (Prefix Tree)",
@@ -1724,7 +1793,8 @@
     ],
     "solution": "class Trie:\n    def __init__(self):\n        self.children = {}\n        self.is_end = False\n\n    def insert(self, word):\n        node = self\n        for ch in word:\n            if ch not in node.children:\n                node.children[ch] = Trie()\n            node = node.children[ch]\n        node.is_end = True\n\n    def search(self, word):\n        node = self\n        for ch in word:\n            if ch not in node.children:\n                return False\n            node = node.children[ch]\n        return node.is_end\n\n    def startsWith(self, prefix):\n        node = self\n        for ch in prefix:\n            if ch not in node.children:\n                return False\n            node = node.children[ch]\n        return True",
     "groundTruth": "correct",
-    "reviewNote": ""
+    "reviewNote": "",
+    "difficulty": "MEDIUM"
   },
   {
     "title": "Non-overlapping Intervals",
@@ -1755,7 +1825,8 @@
     ],
     "solution": "def eraseOverlapIntervals(intervals):\n    if not intervals:\n        return 0\n    intervals.sort(key=lambda x: x[1])\n    count = 0\n    end = float('-inf')\n    for s, e in intervals:\n        if s >= end:\n            end = e\n        else:\n            count += 1\n    return count",
     "groundTruth": "correct",
-    "reviewNote": ""
+    "reviewNote": "",
+    "difficulty": "MEDIUM"
   },
   {
     "title": "Minimum Number of Arrows to Burst Balloons",
@@ -1786,7 +1857,8 @@
     ],
     "solution": "def findMinArrowShots(points):\n    if not points:\n        return 0\n    points.sort(key=lambda x: x[1])\n    arrows = 1\n    end = points[0][1]\n    for s, e in points[1:]:\n        if s >= end:\n            arrows += 1\n            end = e\n    return arrows",
     "groundTruth": "incorrect",
-    "reviewNote": "Using >= instead of > to compare a balloon's start with the current end means the algorithm fails to burst balloons that share an endpoint. Since balloons are inclusive ranges, xstart == current_end means the same arrow can still burst the balloon. With >=, an extra arrow is unnecessarily counted every time two balloons share an endpoint."
+    "reviewNote": "Using >= instead of > to compare a balloon's start with the current end means the algorithm fails to burst balloons that share an endpoint. Since balloons are inclusive ranges, xstart == current_end means the same arrow can still burst the balloon. With >=, an extra arrow is unnecessarily counted every time two balloons share an endpoint.",
+    "difficulty": "MEDIUM"
   },
   {
     "title": "Daily Temperatures",
@@ -1813,7 +1885,8 @@
     ],
     "solution": "def dailyTemperatures(temperatures):\n    n = len(temperatures)\n    answer = [0] * n\n    stack = []\n    for i in range(n):\n        while stack and temperatures[i] > temperatures[stack[-1]]:\n            idx = stack.pop()\n            answer[idx] = i - idx\n        stack.append(i)\n    return answer",
     "groundTruth": "correct",
-    "reviewNote": ""
+    "reviewNote": "",
+    "difficulty": "MEDIUM"
   },
   {
     "title": "Online Stock Span",
@@ -1833,7 +1906,8 @@
     ],
     "solution": "class StockSpanner:\n    def __init__(self):\n        self.stack = []\n    def next(self, price):\n        span = 1\n        while self.stack and self.stack[-1][0] < price:\n            span += self.stack.pop()[1]\n        self.stack.append((price, span))\n        return span",
     "groundTruth": "incorrect",
-    "reviewNote": "Using < instead of <= in the while condition means equal prices are not counted as part of the span. Since the span definition includes days where the price was less than or equal to today's price, equal previous prices should pop the stack and be aggregated into the span."
+    "reviewNote": "Using < instead of <= in the while condition means equal prices are not counted as part of the span. Since the span definition includes days where the price was less than or equal to today's price, equal previous prices should pop the stack and be aggregated into the span.",
+    "difficulty": "MEDIUM"
   },
   {
     "title": "Search Suggestions System",
@@ -1864,6 +1938,7 @@
     ],
     "solution": "def suggestedProducts(products, searchWord):\n    products.sort()\n    class TrieNode:\n        def __init__(self):\n            self.children = {}\n            self.words = []\n    root = TrieNode()\n    for p in products:\n        cur = root\n        for c in p:\n            if c not in cur.children:\n                cur.children[c] = TrieNode()\n            cur = cur.children[c]\n            if len(cur.words) < 3:\n                cur.words.append(p)\n    res = []\n    cur = root\n    for c in searchWord:\n        if cur and c in cur.children:\n            cur = cur.children[c]\n            res.append(cur.words[:])\n        else:\n            cur = None\n            res.append([])\n    return res",
     "groundTruth": "correct",
-    "reviewNote": ""
+    "reviewNote": "",
+    "difficulty": "MEDIUM"
   }
 ]

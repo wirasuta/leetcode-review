@@ -10,6 +10,7 @@ export interface Problem {
   title: string;
   titleSlug: string;
   category: string;
+  difficulty: string;
   description: string;
   examples: Example[];
   constraints: string[];
