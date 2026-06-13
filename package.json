@@ -1,6 +1,6 @@
 {
-  "homepage": "https://wirasuta.github.io/leetcode-review/",
   "name": "leetcode-review",
+  "homepage": "https://wirasuta.github.io/leetcode-review/",
   "private": true,
   "version": "0.0.0",
   "type": "module",
