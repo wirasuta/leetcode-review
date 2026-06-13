@@ -1,4 +1,4 @@
-import { Problem, Verdict } from '../lib/types';
+import type { Problem, Verdict } from '../lib/types';
 import styles from './ResultsScreen.module.css';
 
 interface ResultsScreenProps {

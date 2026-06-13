@@ -1,4 +1,4 @@
-import { Verdict } from '../lib/types';
+import type { Verdict } from '../lib/types';
 import styles from './VerdictButtons.module.css';
 
 interface VerdictButtonsProps {

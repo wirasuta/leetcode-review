@@ -1,4 +1,4 @@
-import { Problem, Verdict } from '../lib/types';
+import type { Problem, Verdict } from '../lib/types';
 import SolutionCode from './SolutionCode';
 import VerdictButtons from './VerdictButtons';
 import styles from './QuestionCard.module.css';
